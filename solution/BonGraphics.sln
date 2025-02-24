@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{4DF79E80-A9FD-4047-90F1-E92AD5EF5654}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Library", "Library", "{83E198F8-EDE6-484A-A245-B7093924735F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ipog.Bon.Api", "API\BonGraphics.Api\ipog.Bon.Api.csproj", "{C130AED7-1898-49BD-AF9C-D0F31CAE6F6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ipog.Bon.Model", "Library\ipog.Bon.Model\ipog.Bon.Model.csproj", "{A9119FBC-D64F-4448-8811-F47616FEB48B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ipog.Bon.Entity", "Library\ipog.Bon.Entity\ipog.Bon.Entity.csproj", "{68C3C5C9-F654-4EBC-B53A-9EB218BE29E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ipog.Bon.Context", "Library\ipog.Bon.Context\ipog.Bon.Context.csproj", "{180741F6-94B5-4DF2-BEC8-843EF6A17D3D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ipog.Bon.Repositories", "Library\ipog.Bon.Repositories\ipog.Bon.Repositories.csproj", "{74C5AA8D-0AAA-455C-B100-7C7FF1491527}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C130AED7-1898-49BD-AF9C-D0F31CAE6F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C130AED7-1898-49BD-AF9C-D0F31CAE6F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C130AED7-1898-49BD-AF9C-D0F31CAE6F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C130AED7-1898-49BD-AF9C-D0F31CAE6F6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9119FBC-D64F-4448-8811-F47616FEB48B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9119FBC-D64F-4448-8811-F47616FEB48B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9119FBC-D64F-4448-8811-F47616FEB48B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9119FBC-D64F-4448-8811-F47616FEB48B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68C3C5C9-F654-4EBC-B53A-9EB218BE29E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C3C5C9-F654-4EBC-B53A-9EB218BE29E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C3C5C9-F654-4EBC-B53A-9EB218BE29E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C3C5C9-F654-4EBC-B53A-9EB218BE29E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{180741F6-94B5-4DF2-BEC8-843EF6A17D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{180741F6-94B5-4DF2-BEC8-843EF6A17D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{180741F6-94B5-4DF2-BEC8-843EF6A17D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{180741F6-94B5-4DF2-BEC8-843EF6A17D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74C5AA8D-0AAA-455C-B100-7C7FF1491527}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74C5AA8D-0AAA-455C-B100-7C7FF1491527}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74C5AA8D-0AAA-455C-B100-7C7FF1491527}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74C5AA8D-0AAA-455C-B100-7C7FF1491527}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C130AED7-1898-49BD-AF9C-D0F31CAE6F6F} = {4DF79E80-A9FD-4047-90F1-E92AD5EF5654}
+		{A9119FBC-D64F-4448-8811-F47616FEB48B} = {83E198F8-EDE6-484A-A245-B7093924735F}
+		{68C3C5C9-F654-4EBC-B53A-9EB218BE29E7} = {83E198F8-EDE6-484A-A245-B7093924735F}
+		{180741F6-94B5-4DF2-BEC8-843EF6A17D3D} = {83E198F8-EDE6-484A-A245-B7093924735F}
+		{74C5AA8D-0AAA-455C-B100-7C7FF1491527} = {83E198F8-EDE6-484A-A245-B7093924735F}
+	EndGlobalSection
+EndGlobal
