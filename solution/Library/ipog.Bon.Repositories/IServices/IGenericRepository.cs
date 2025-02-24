@@ -1,6 +1,4 @@
-﻿
-
-namespace ipog.Bon.Context
+﻿namespace ipog.Bon.Repositories.IServices
 {
     public interface IGenericRepository<T> where T : class
     {

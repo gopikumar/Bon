@@ -13,10 +13,17 @@ namespace ipog.Bon.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<UserModel>> GetCatigories()
+        public async Task<IActionResult> GetCatigories()
         {
-            var catigories = await _userRepository.Get();
-            return default;
+            var result = await _userRepository.Get();
+            return Ok(result);
+        }
+
+        [HttpGet("Id")]
+        public async Task<IActionResult> GetCatigories(Guid id)
+        {
+            var result = await _userRepository.Find(id);
+            return Ok(result);
         }
     }
 }
