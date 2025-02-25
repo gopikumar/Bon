@@ -1,5 +1,8 @@
 using ipog.Bon.Repositories.IServices;
 using ipog.Bon.Repositories.Services;
+using ipog.Bon.Workflow.IService;
+using ipog.Bon.Workflow.Mapping;
+using ipog.Bon.Workflow.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +13,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAutoMapper(typeof(MapperProfile));
+builder.Services.AddTransient<IMapping, Mapping>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IUserService, UserService>();
 
 var app = builder.Build();
 

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Library\ipog.Bon.Model\ipog.Bon.Model.csproj" />
-    <ProjectReference Include="..\..\Library\ipog.Bon.Repositories\ipog.Bon.Repositories.csproj" />
+    <ProjectReference Include="..\..\Library\ipog.Bon.Workflow\ipog.Bon.Workflow.csproj" />
   </ItemGroup>
 
 </Project>
