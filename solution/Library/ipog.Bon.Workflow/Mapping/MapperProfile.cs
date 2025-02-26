@@ -14,8 +14,8 @@ namespace ipog.Bon.Workflow.Mapping
             //CreateMap<RequestByIdModel, RequestById>();
             //CreateMap<GetRequestModel, GetRequest>();
             //CreateMap<FilterRequestModel, FilterRequest>();
-            CreateMap<PaginationModel, Pagination>().ReverseMap();
-            CreateMap<FilterPaginationModel, FilterPagination>().ReverseMap();
+            CreateMap<PaginationModel, Pagination>();
+            CreateMap<FilterPaginationModel, FilterPagination>();
 
             //CreateMap<ResponseCollection, ResponseModelCollection>();
             //CreateMap<Result, ResultModel>();
