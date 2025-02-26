@@ -1,4 +1,6 @@
-﻿using ipog.Bon.Model;
+﻿using ipog.Bon.Entity;
+using ipog.Bon.Model;
+using ipog.Bon.Model.Users;
 using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,22 +17,106 @@ namespace ipog.Bon.Api.Controllers
         [HttpPost("Filter")]
         public async Task<IActionResult> GetFilter(FilterPaginationModel pagination)
         {
-            var result = await _userService.Get(pagination);
-            return Ok(result);
+            if (pagination == null)
+            {
+                return BadRequest("Invalid request.");
+            }
+            ResponseModelCollection response = await _userService.Get(pagination);
+            if (response == null)
+            {
+                return NotFound("Not found");
+            }
+            return Ok(response);
         }
 
         [HttpPost("All")]
         public async Task<IActionResult> GetAll(PaginationModel pagination)
         {
-            var result = await _userService.Get(pagination);
-            return Ok(result);
+            if (pagination == null)
+            {
+                return BadRequest("Invalid request.");
+            }
+            ResponseModelCollection response = await _userService.Get(pagination);
+            if (response == null)
+            {
+                return NotFound("Not found");
+            }
+            return Ok(response);
         }
 
         [HttpGet("Id")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            //var result = await _userRepository.Find(id);
-            return Ok();
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Invalid ID.");
+            }
+            ResponseByIdModel response = await _userService.Find(id);
+            if (response == null)
+            {
+                return NotFound("User not found.");
+            }
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Insert(UserModel model)
+        {
+            if (model == null)
+            {
+                return BadRequest("Invalid request.");
+            }
+            ResponseModel response = await _userService.Add(model);
+            if (response == null)
+            {
+                return NotFound("Insert failed.");
+            }
+            return Ok(response);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> Update(UserModel model)
+        {
+            if (model == null || model?.UId == Guid.Empty)
+            {
+                return BadRequest("Invalid request.");
+            }
+            ResponseModel response = await _userService.Update(model);
+            if (response == null)
+            {
+                return NotFound("Update failed.");
+            }
+            return Ok(response);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Invalid ID.");
+            }
+            ResponseByIdModel response = await _userService.Delete(id);
+            if (response == null)
+            {
+                return NotFound("Delete failed.");
+            }
+            return Ok(response);
+        }
+
+        [HttpGet("IsActive")]
+        public async Task<IActionResult> UpdateIsActive(Guid id, bool isActive)
+        {
+            if (id == Guid.Empty)
+            {
+                return BadRequest("Invalid ID.");
+            }
+            ResponseByIdModel response = await _userService.IsActive(id, isActive);
+            if (response == null)
+            {
+                return NotFound("Update failed.");
+            }
+            return Ok(response);
         }
     }
 }

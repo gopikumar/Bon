@@ -27,8 +27,11 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            GridReader response = await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure);
-            return (response.ReadFirst<int>(), response.Read<User>());
+            if (await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure) is GridReader response && response != null)
+            {
+                return (response.ReadFirst<int>(), response.Read<User>());
+            }
+            return new();
         }
         public async Task<(int, IEnumerable<User>)> Get(FilterPagination pagination)
         {
@@ -42,8 +45,11 @@ namespace ipog.Bon.Repositories.Services
                     pageSize = pagination.PageSize,
                     filterColumns = pagination.FilterColumns
                 });
-            GridReader response = await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure);
-            return (response.ReadFirst<int>(), response.Read<User>());
+            if (await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure) is GridReader response && response != null)
+            {
+                return (response.ReadFirst<int>(), response.Read<User>());
+            }
+            return new();
         }
         public async Task<User> Find(Guid uid)
         {
@@ -61,20 +67,34 @@ namespace ipog.Bon.Repositories.Services
                 new
                 {
                     action = "Add",
-                    uid = Guid.NewGuid()
+                    name = model.Name,
+                    lastName = model.LastName,
+                    password = model.Password,
+                    email = model.Email,
+                    mobile = model.Mobile,
+                    roleId = model.RoleId,
+                    actionBy = model.ActionBy,
+                    isActive = model.IsActive
                 });
-            await _connection.ExecuteAsync("AddUser", parameters, commandType: CommandType.StoredProcedure);
-            return model;
+            return await _connection.QueryFirstOrDefaultAsync<User>("sp_User", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<User> Update(User model)
         {
             DynamicParameters parameters = new(
                 new
                 {
-                    action = "Update"
+                    action = "Update",
+                    uId = model.UId,
+                    name = model.Name,
+                    lastName = model.LastName,
+                    password = model.Password,
+                    email = model.Email,
+                    mobile = model.Mobile,
+                    roleId = model.RoleId,
+                    actionBy = model.ActionBy,
+                    isActive = model.IsActive
                 });
-            await _connection.ExecuteAsync("UpdateUser", parameters, commandType: CommandType.StoredProcedure);
-            return model;
+            return await _connection.QueryFirstOrDefaultAsync<User>("sp_User", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<int> Delete(Guid uid)
         {
@@ -95,8 +115,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     isActive
                 });
-            await _connection.ExecuteAsync("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
-            return await Find(uid);
+            return await _connection.QueryFirstOrDefaultAsync<User>("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

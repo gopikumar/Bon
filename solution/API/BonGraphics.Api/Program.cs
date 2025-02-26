@@ -4,7 +4,7 @@ using ipog.Bon.Workflow.IService;
 using ipog.Bon.Workflow.Mapping;
 using ipog.Bon.Workflow.Service;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
@@ -18,7 +18,7 @@ builder.Services.AddTransient<IMapping, Mapping>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IUserService, UserService>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

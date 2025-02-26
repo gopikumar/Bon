@@ -9,7 +9,7 @@
         public string Email { get; set; } = string.Empty;
         public string Mobile { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public Guid RoleId { get; set; }
+        public long RoleId { get; set; }
         public string? RoleName { get; set; }
         public long ActionBy { get; set; }
         public DateTime ActionDate { get; set; }
