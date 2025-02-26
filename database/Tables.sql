@@ -1,6 +1,6 @@
-USE [BonGraphics]
+USE [Bon]
 GO
-/****** Object:  Table [dbo].[Building]    Script Date: 24-02-2025 22:57:50 ******/
+/****** Object:  Table [dbo].[Building]    Script Date: 26-02-2025 18:32:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -15,13 +15,13 @@ CREATE TABLE [dbo].[Building](
 	[ActionBy] [bigint] NOT NULL,
 	[ActionDate] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
- CONSTRAINT [PK__Building__C5B1966227DC3A71] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Building] PRIMARY KEY CLUSTERED 
 (
-	[UId] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Machine]    Script Date: 24-02-2025 22:57:50 ******/
+/****** Object:  Table [dbo].[Machine]    Script Date: 26-02-2025 18:32:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -44,13 +44,13 @@ CREATE TABLE [dbo].[Machine](
 	[ActionBy] [bigint] NOT NULL,
 	[ActionDate] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
- CONSTRAINT [PK__Machine__C5B19662AB6CCB8F] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Machine] PRIMARY KEY CLUSTERED 
 (
-	[UId] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[MachineMaintenance]    Script Date: 24-02-2025 22:57:50 ******/
+/****** Object:  Table [dbo].[MachineMaintenance]    Script Date: 26-02-2025 18:32:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -68,13 +68,13 @@ CREATE TABLE [dbo].[MachineMaintenance](
 	[ActionBy] [bigint] NOT NULL,
 	[ActionDate] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
- CONSTRAINT [PK__MachineM__C5B196620717A046] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_MachineMaintenance] PRIMARY KEY CLUSTERED 
 (
-	[UId] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Role]    Script Date: 24-02-2025 22:57:50 ******/
+/****** Object:  Table [dbo].[Role]    Script Date: 26-02-2025 18:32:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -89,11 +89,11 @@ CREATE TABLE [dbo].[Role](
 	[IsActive] [bit] NOT NULL,
  CONSTRAINT [PK__Role__C5B19662F68869C6] PRIMARY KEY CLUSTERED 
 (
-	[UId] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[User]    Script Date: 24-02-2025 22:57:50 ******/
+/****** Object:  Table [dbo].[User]    Script Date: 26-02-2025 18:32:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -106,13 +106,18 @@ CREATE TABLE [dbo].[User](
 	[Password] [nvarchar](30) NOT NULL,
 	[Email] [nvarchar](50) NOT NULL,
 	[Mobile] [nvarchar](20) NOT NULL,
-	[RoleId] [uniqueidentifier] NOT NULL,
+	[RoleId] [bigint] NOT NULL,
 	[ActionBy] [bigint] NOT NULL,
 	[ActionDate] [datetime] NOT NULL,
 	[IsActive] [bit] NOT NULL,
  CONSTRAINT [PK__User__C5B196629F284FAD] PRIMARY KEY CLUSTERED 
 (
-	[UId] ASC
+	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Role] FOREIGN KEY([RoleId])
+REFERENCES [dbo].[Role] ([Id])
+GO
+ALTER TABLE [dbo].[User] CHECK CONSTRAINT [FK_User_Role]
 GO

@@ -1,3 +1,10 @@
+USE [Bon]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetFilter]    Script Date: 26-02-2025 18:33:31 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
 CREATE PROCEDURE [dbo].[sp_GetFilter]
 (
 @tableName NVARCHAR(100),
@@ -5,24 +12,30 @@ CREATE PROCEDURE [dbo].[sp_GetFilter]
 @sortBy NVARCHAR(4),
 @pageNumber INT,
 @pageSize INT,
-@filterColumn NVARCHAR(MAX) =null
+@filterColumns NVARCHAR(MAX) =null
 )
 AS
 BEGIN
 
-	DECLARE @l_SQL NVARCHAR(MAX);
-	DECLARE @l_FilterColumn NVARCHAR(MAX);
+	DECLARE @l_Count NVARCHAR(MAX);
+	DECLARE @l_Sql NVARCHAR(MAX);
+	DECLARE @l_FilterColumns NVARCHAR(MAX);
 
-	SET @l_FilterColumn = CASE
-							WHEN @filterColumn is null THEN ''
-							ELSE ' where '+ @filterColumn
+	SET @l_FilterColumns = CASE
+							WHEN @filterColumns is null THEN ''
+							ELSE ' where '+ @filterColumns
 						  END;
 						  
-	SET @l_SQL = N'SELECT * FROM '+@tableName + @l_FilterColumn + ' ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy + '  
+	SET @l_Count = N'SELECT count(*) as count FROM '+@tableName + @l_FilterColumns + ' ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy + '  
 					OFFSET (@pageNumber - 1) * @pageSize ROWS
 					FETCH NEXT @pageSize ROWS ONLY';
 
-	EXEC sp_executesql @l_SQL, N'@pageNumber INT, @pageSize INT', @pageNumber, @pageSize;
+	SET @l_Sql = N'SELECT * FROM '+@tableName + @l_FilterColumns + ' ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy + '  
+					OFFSET (@pageNumber - 1) * @pageSize ROWS
+					FETCH NEXT @pageSize ROWS ONLY';
+
+	EXEC sp_executesql @l_Count, N'@pageNumber INT, @pageSize INT', @pageNumber, @pageSize;
+	EXEC sp_executesql @l_Sql, N'@pageNumber INT, @pageSize INT', @pageNumber, @pageSize;
 END
 
 
