@@ -8,10 +8,7 @@
     {
         public Guid Id { get; set; }
     }
-    public class GetRequestModel
-    {
-    }
-    public class FilterRequestModel : PaginationModel
+    public class RequestModelCollection : PaginationModel
     {
     }
 }

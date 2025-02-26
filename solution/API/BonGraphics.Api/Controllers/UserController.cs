@@ -1,4 +1,5 @@
-﻿using ipog.Bon.Workflow.IService;
+﻿using ipog.Bon.Model;
+using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ipog.Bon.Api.Controllers
@@ -12,16 +13,16 @@ namespace ipog.Bon.Api.Controllers
         }
 
         [HttpPost("Filter")]
-        public async Task<IActionResult> GetFilter()
+        public async Task<IActionResult> GetFilter(FilterPaginationModel pagination)
         {
-            var result = await _userService.Get();
+            var result = await _userService.Get(pagination);
             return Ok(result);
         }
 
-        [HttpGet("All")]
-        public async Task<IActionResult> GetAll()
+        [HttpPost("All")]
+        public async Task<IActionResult> GetAll(PaginationModel pagination)
         {
-            var result = await _userService.Get();
+            var result = await _userService.Get(pagination);
             return Ok(result);
         }
 
