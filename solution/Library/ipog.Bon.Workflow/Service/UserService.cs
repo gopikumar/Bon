@@ -1,5 +1,6 @@
 ﻿using ipog.Bon.Entity;
 using ipog.Bon.Entity.Users;
+using ipog.Bon.Model;
 using ipog.Bon.Model.Users;
 using ipog.Bon.Repositories.IServices;
 using ipog.Bon.Workflow.IService;
@@ -16,34 +17,47 @@ namespace ipog.Bon.Workflow.Service
             _userRepository = iUserRepository;
             _mapper = mapper;
         }
-        public async Task<UserModelCollection> Get()
+        public async Task<ResponseModelCollection> Get()
         {
-            if (await _userRepository.Get() is IEnumerable<User> users)
+            if (await _userRepository.Get() is (int,IEnumerable<User>) item)
             {
-                if (users == null || !users.Any())
+                if (item.Item1.Equals(0))
                 {
-                    // Log the error
-                    return default;
+                    return new ResponseModelCollection()
+                    {
+                        Code = 404,
+                        Success = false,
+                        Message = "Data not found"
+                    };
                 }
-                if (await _mapper.CreateMap<UserModelCollection, List<User>>(users.ToList()) is UserModelCollection userModel)
+                if (await _mapper.CreateMap<UserModelCollection, List<User>>(item.Item2.ToList()) is UserModelCollection userModel)
                 {
-                    return userModel;
+                    return new ResponseModelCollection()
+                    {
+                        Record = new ResultModel()
+                        {
+                            Count = item.Item1,
+                            Data = userModel
+                        }
+                    };
                 }
             }
             return default;
         }
-        public async Task<List<UserModel>> Get(Pagination pagination)
+        public async Task<ResponseModelCollection> Get(Pagination pagination)
         {
-            if (await _userRepository.Get(pagination) is IEnumerable<User> users)
+            if (await _userRepository.Get(pagination) is (int, IEnumerable<User>) item)
             {
-                if (users == null || !users.Any())
+                if (await _mapper.CreateMap<UserModelCollection, List<User>>(item.Item2.ToList()) is UserModelCollection userModel)
                 {
-                    // Log the error
-                    return default;
-                }
-                if (await _mapper.CreateMap<List<UserModel>, List<User>>(users.ToList()) is List<UserModel> userModel)
-                {
-                    return userModel;
+                    return new ResponseModelCollection()
+                    {
+                        Record = new ResultModel()
+                        {
+                            Count = item.Item1,
+                            Data = userModel
+                        }
+                    };
                 }
             }
             return default;

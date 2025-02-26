@@ -4,8 +4,8 @@ namespace ipog.Bon.Repositories.IServices
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<IEnumerable<T>> Get();
-        Task<IEnumerable<T>> Get(Pagination pagination);
+        Task<(int, IEnumerable<T>)> Get();
+        Task<(int, IEnumerable<T>)> Get(Pagination pagination);
         Task<T> Find(Guid uid);
         Task<T> Add(T model);
         Task<T> Update(T model);

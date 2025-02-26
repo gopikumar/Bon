@@ -9,18 +9,16 @@
         public string Mobile { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public Guid RoleId { get; set; }
+        public long ActionBy { get; set; }
+        public bool IsActive { get; set; }
     }
     public class GetUserModel : UserModel
     {
         public string? RoleName { get; set; }
-        public long ActionBy { get; set; }
         public DateTime ActionDate { get; set; }
-        public bool IsActive { get; set; }
     }
 
-    public class UserModelCollection : List<UserModel>
+    public class UserModelCollection : List<GetUserModel>
     {
-        public string RoleName { get; set; } = string.Empty;
-        public bool IsActive { get; set; }
     }
 }

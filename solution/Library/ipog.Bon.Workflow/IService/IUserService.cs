@@ -1,9 +1,12 @@
-﻿using ipog.Bon.Model.Users;
+﻿using ipog.Bon.Entity;
+using ipog.Bon.Model;
+using ipog.Bon.Model.Users;
 
 namespace ipog.Bon.Workflow.IService
 {
     public interface IUserService
     {
-        Task<UserModelCollection> Get();
+        Task<ResponseModelCollection> Get();
+        Task<ResponseModelCollection> Get(Pagination pagination);
     }
 }

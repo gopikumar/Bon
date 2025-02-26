@@ -5,6 +5,7 @@ using ipog.Bon.Repositories.IServices;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
 {
@@ -17,55 +18,77 @@ namespace ipog.Bon.Repositories.Services
             _configuration = configuration;
             _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
-        public async Task<IEnumerable<User>> Get()
+        public async Task<(int, IEnumerable<User>)> Get()
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@action", "Filter");
-            return await _connection.QueryAsync<User>("sp_UserGet", parameters, commandType: CommandType.StoredProcedure);
+            DynamicParameters parameters = new(new { action = "All" });
+            GridReader response = await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure);
+            return (response.ReadFirst<int>(), response.Read<User>());
         }
-        public async Task<IEnumerable<User>> Get(Pagination pagination)
+        public async Task<(int, IEnumerable<User>)> Get(Pagination pagination)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@action", "Filter");
-            parameters.Add("@orderBy", pagination.OrderBy);
-            parameters.Add("@sortBy", pagination.SortBy);
-            parameters.Add("@pageNumber", pagination.PageNumber);
-            parameters.Add("@pageSize", pagination.PageSize);
-            return await _connection.QueryAsync<User>("sp_UserGet", parameters, commandType: CommandType.StoredProcedure);
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Filter",
+                    orderBy = pagination.OrderBy,
+                    sortBy = pagination.SortBy,
+                    pageNumber = pagination.PageNumber,
+                    pageSize = pagination.PageSize,
+                    filterColumns = pagination.FilterColumns
+                });
+            GridReader response = await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure);
+            return (response.ReadFirst<int>(), response.Read<User>());
         }
         public async Task<User> Find(Guid uid)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@action", "Get");
-            parameters.Add("@uid", uid);
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Get",
+                    uid
+                });
             return await _connection.QueryFirstOrDefaultAsync<User>("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<User> Add(User model)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@uid", Guid.NewGuid());
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Add",
+                    uid = Guid.NewGuid()
+                });
             await _connection.ExecuteAsync("AddUser", parameters, commandType: CommandType.StoredProcedure);
             return model;
         }
         public async Task<User> Update(User model)
         {
-            var parameters = new DynamicParameters();
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Update"
+                });
             await _connection.ExecuteAsync("UpdateUser", parameters, commandType: CommandType.StoredProcedure);
             return model;
         }
         public async Task<int> Delete(Guid uid)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@action", "Delete");
-            parameters.Add("@uid", uid);
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Delete",
+                    uid
+                });
             return await _connection.ExecuteAsync("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<int> IsActive(Guid uid, bool isActive)
         {
-            var parameters = new DynamicParameters();
-            parameters.Add("@action", "IsActive");
-            parameters.Add("@uid", uid);
-            parameters.Add("@isActive", isActive);
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "IsActive",
+                    uid,
+                    isActive
+                });
             return await _connection.ExecuteAsync("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
     }

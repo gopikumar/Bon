@@ -21,7 +21,7 @@ namespace ipog.Bon.Workflow.Mapping
             //CreateMap<ResponseById, ResponseByIdModel>();
 
             CreateMap<User, UserModel>().ReverseMap();
-            //CreateMap<GetUser, GetUserModel>();
+            CreateMap<User, GetUserModel>();
             CreateMap<User, UserModelCollection>();
         }
     }
