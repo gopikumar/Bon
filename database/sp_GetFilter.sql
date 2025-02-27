@@ -1,6 +1,6 @@
 USE [Bon]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilter]    Script Date: 26-02-2025 18:33:31 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilter]    Script Date: 27-02-2025 19:56:02 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -26,9 +26,7 @@ BEGIN
 							ELSE ' where '+ @filterColumns
 						  END;
 						  
-	SET @l_Count = N'SELECT count(*) as count FROM '+@tableName + @l_FilterColumns + ' ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy + '  
-					OFFSET (@pageNumber - 1) * @pageSize ROWS
-					FETCH NEXT @pageSize ROWS ONLY';
+	SET @l_Count = N'SELECT COUNT(*) FROM '+@tableName + @l_FilterColumns;
 
 	SET @l_Sql = N'SELECT * FROM '+@tableName + @l_FilterColumns + ' ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy + '  
 					OFFSET (@pageNumber - 1) * @pageSize ROWS

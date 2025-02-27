@@ -1,6 +1,6 @@
 USE [Bon]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 26-02-2025 18:33:16 ******/
+/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 27-02-2025 20:01:12 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -55,8 +55,10 @@ BEGIN
 		END  
 	END CATCH
 END	
+
+--EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 26-02-2025 18:33:16 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 27-02-2025 20:01:12 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -69,25 +71,24 @@ CREATE PROCEDURE [dbo].[sp_UserById]
 )
 AS
 BEGIN
-
-IF(@action='Get')
-BEGIN
-	SELECT *from [User] where UId=@uid
-END
-
-IF(@action='Delete')
-BEGIN
-	Delete from [User] where UId=@uid
-END
-
-IF(@action='IsActive')
-BEGIN
-	Update [User] set isActive=@isActive  where UId=@uid
-END
-
+		IF(@action='Get')
+		BEGIN
+			SELECT *from [User] where UId=@uid
+		END
+		
+		IF(@action='Delete')
+		BEGIN
+			Delete from [User] where UId=@uid
+		END
+		
+		IF(@action='IsActive')
+		BEGIN
+			Update [User] set isActive=@isActive  where UId=@uid
+			SELECT *from [User] where UId=@uid
+		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 26-02-2025 18:33:16 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 27-02-2025 20:01:12 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -95,18 +96,18 @@ GO
 CREATE PROCEDURE [dbo].[sp_UserGet]
 (
 @action NVARCHAR(50),
-@orderBy NVARCHAR(100) = 'id',
-@sortBy NVARCHAR(4) = 'ASC',
+@orderBy NVARCHAR(100),
+@sortBy NVARCHAR(4),
 @pageNumber INT=1,
 @pageSize INT=10,
-@filterColumns NVARCHAR(MAX) =null
+@filterColumns NVARCHAR(MAX) =''
 )
 AS
 BEGIN
 	DECLARE @l_SQL NVARCHAR(MAX);
 	IF(@action='All')
-	BEGIN
-		SELECT 0 as count from [User]; 
+	BEGIN 
+		SELECT count(*) as count from [User];
 		SET @l_SQL = N'SELECT *from [User] ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy;
 		EXEC sp_executesql @l_SQL
 	END
@@ -116,9 +117,9 @@ BEGIN
 		DECLARE @l_FilterColumns NVARCHAR(MAX);
 
 		SET @l_FilterColumns = CASE
-								WHEN @filterColumns is null THEN null
+								WHEN @filterColumns ='' THEN null
 								ELSE @filterColumns
-							  END;
+							   END;
 		EXEC sp_GetFilter '[User]', @orderBy, @sortBy, @pageNumber, @pageSize, @l_FilterColumns;
 	END
 END	

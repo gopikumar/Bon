@@ -4,9 +4,9 @@ namespace ipog.Bon.Model
 {
     public class PaginationModel
     {
-        [DefaultValue("id")]
-        public string? SortBy { get; set; }
         [DefaultValue("asc")]
+        public string? SortBy { get; set; }
+        [DefaultValue("id")]
         public string? OrderBy { get; set; }
     }
     public class FilterPaginationModel : PaginationModel

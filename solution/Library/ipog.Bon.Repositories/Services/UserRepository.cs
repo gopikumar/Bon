@@ -27,29 +27,18 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            if (await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure) is GridReader response && response != null)
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure))
             {
                 return (response.ReadFirst<int>(), response.Read<User>());
             }
-            return new();
         }
         public async Task<(int, IEnumerable<User>)> Get(FilterPagination pagination)
         {
-            DynamicParameters parameters = new(
-                new
-                {
-                    action = "Filter",
-                    orderBy = pagination.OrderBy,
-                    sortBy = pagination.SortBy,
-                    pageNumber = pagination.PageNumber,
-                    pageSize = pagination.PageSize,
-                    filterColumns = pagination.FilterColumns
-                });
-            if (await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure) is GridReader response && response != null)
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_UserGet",
+                PaginationFilter.GetPaginationParameters(pagination), commandType: CommandType.StoredProcedure))
             {
                 return (response.ReadFirst<int>(), response.Read<User>());
             }
-            return new();
         }
         public async Task<User> Find(Guid uid)
         {

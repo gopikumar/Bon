@@ -50,39 +50,27 @@ namespace ipog.Bon.Workflow.Service
         }
         public async Task<ResponseByIdModel> Find(Guid uid)
         {
-            if (await _userRepository.Find(uid) is IEnumerable<User> item)
+            if (await _userRepository.Find(uid) is User item)
             {
-                if (item == null || !item.Any())
-                {
-                    return UtilityResponse.ErrorResponseById(404, "Data not found");
-                }
-                return UtilityResponse.SuccessResponseById<User>(200, "Get successfully", item.FirstOrDefault());
+                return UtilityResponse.SuccessResponseById<UserModel>(200, "Get successfully", await _mapper.CreateMap<UserModel, User>(item));
             }
-            return new();
+            return UtilityResponse.ErrorResponseById(404, "Data not found");
         }
         public async Task<ResponseModel> Add(UserModel model)
         {
-            if (await _userRepository.Add(await _mapper.CreateMap<User, UserModel>(model)) is IEnumerable<User> item)
+            if (await _userRepository.Add(await _mapper.CreateMap<User, UserModel>(model)) is User item)
             {
-                if (item == null || !item.Any())
-                {
-                    return UtilityResponse.ErrorResponse(404, "Data not found");
-                }
-                return UtilityResponse.SuccessResponse<User>(200, "Insert successfully", item.FirstOrDefault());
+                return UtilityResponse.SuccessResponse<UserModel>(200, "Insert successfully", await _mapper.CreateMap<UserModel, User>(item));
             }
-            return new();
+            return UtilityResponse.ErrorResponse(404, "Insert failed");
         }
         public async Task<ResponseModel> Update(UserModel model)
         {
-            if (await _userRepository.Update(await _mapper.CreateMap<User, UserModel>(model)) is IEnumerable<User> item)
+            if (await _userRepository.Update(await _mapper.CreateMap<User, UserModel>(model)) is User item)
             {
-                if (item == null || !item.Any())
-                {
-                    return UtilityResponse.ErrorResponse(404, "Data not found");
-                }
-                return UtilityResponse.SuccessResponse<User>(200, "Insert successfully", item.FirstOrDefault());
+                return UtilityResponse.SuccessResponse<UserModel>(200, "Update successfully", await _mapper.CreateMap<UserModel, User>(item));
             }
-            return new();
+            return UtilityResponse.ErrorResponse(404, "Update failed");
         }
         public async Task<ResponseByIdModel> Delete(Guid uid)
         {
@@ -92,21 +80,17 @@ namespace ipog.Bon.Workflow.Service
                 {
                     return UtilityResponse.ErrorResponseById(404, "Data not found");
                 }
-                return UtilityResponse.SuccessResponseById<User>(204, "Deleted successfully", new());
+                return UtilityResponse.SuccessResponseById<User>(204, "Deleted successfully", null);
             }
             return new();
         }
         public async Task<ResponseByIdModel> IsActive(Guid uid, bool isActive)
         {
-            if (await _userRepository.IsActive(uid, isActive) is IEnumerable<User> item)
+            if (await _userRepository.IsActive(uid, isActive) is User item)
             {
-                if (item == null || !item.Any())
-                {
-                    return UtilityResponse.ErrorResponseById(404, "Data not found");
-                }
-                return UtilityResponse.SuccessResponseById<User>(200, "Active status updated successfully", item.FirstOrDefault());
+                return UtilityResponse.SuccessResponseById<UserModel>(200, "Active status updated successfully", await _mapper.CreateMap<UserModel, User>(item));
             }
-            return new();
+            return UtilityResponse.ErrorResponseById(404, "Data not found");
         }
     }
 }
