@@ -1,4 +1,5 @@
 using ipog.Bon.Api;
+using ipog.Bon.Api.Middlewares;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 ConfigureServices(builder.Services);
@@ -10,6 +11,7 @@ void ConfigureServices(IServiceCollection services)
     services.ConfigureMVC();
     services.ConfigureCors();
     services.ConfigureAutoMapper();
+    services.ConfigureMiddleware();
     services.ConfigureWorkflow();
     services.ConfigureRepository();
 }
@@ -20,6 +22,10 @@ void Configure(WebApplication app)
     app.UseSwagger();
     app.UseSwaggerUI();
     //}  
+#if !DEBUG
+    app.UseMiddleware<AuthorizationMiddleware>();
+#endif
+    app.UseMiddleware<ExceptionMiddleware>();
     app.UseAuthorization();
     app.MapControllers();
     app.Run();
