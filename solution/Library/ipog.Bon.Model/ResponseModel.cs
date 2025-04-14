@@ -1,29 +1,29 @@
 ﻿namespace ipog.Bon.Model
 {
-    public class ResponseModel
+    public class ResponseModel<T>
     {
         public int Code { get; set; } = 200;
         public bool Success { get; set; } = true;
         public string Message { get; set; } = "Get success";
-        public dynamic? Data { get; set; }
+        public T? Data { get; set; }
     }
-    public class ResponseByIdModel
+    public class ResponseByIdModel<T>
     {
         public int Code { get; set; } = 200;
         public bool Success { get; set; } = true;
         public string Message { get; set; } = "Get success";
-        public dynamic? Data { get; set; }
+        public T? Data { get; set; }
     }
-    public class ResponseModelCollection
+    public class ResponseModelCollection<T>
     {
         public int Code { get; set; } = 200;
         public bool Success { get; set; } = true;
         public string Message { get; set; } = "Get success";
-        public ResultModel? Record { get; set; }
+        public ResultModel<T>? Record { get; set; }
     }
-    public class ResultModel
+    public class ResultModel<T>
     {
         public int Count { get; set; } = 0;
-        public dynamic? Data { get; set; }
+        public T? Data { get; set; }
     }
 }

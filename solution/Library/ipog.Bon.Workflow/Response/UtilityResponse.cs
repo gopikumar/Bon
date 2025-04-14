@@ -4,9 +4,9 @@ namespace ipog.Bon.Workflow.Response
 {
     public static class UtilityResponse
     {
-        public static ResponseModel SuccessResponse<T>(int code, string message, T data)
+        public static ResponseModel<T> SuccessResponse<T>(int code, string message, T data)
         {
-            return new ResponseModel()
+            return new ResponseModel<T>()
             {
                 Code = code,
                 Success = true,
@@ -14,18 +14,18 @@ namespace ipog.Bon.Workflow.Response
                 Data = data
             };
         }
-        public static ResponseModel ErrorResponse(int code, string message)
+        public static ResponseModel<T> ErrorResponse<T>(int code, string message)
         {
-            return new ResponseModel()
+            return new ResponseModel<T>()
             {
                 Code = code,
                 Success = false,
                 Message = message
             };
         }
-        public static ResponseByIdModel SuccessResponseById<T>(int code, string message, T data)
+        public static ResponseByIdModel<T> SuccessResponseById<T>(int code, string message, T data)
         {
-            return new ResponseByIdModel()
+            return new ResponseByIdModel<T>()
             {
                 Code = code,
                 Success = true,
@@ -33,32 +33,32 @@ namespace ipog.Bon.Workflow.Response
                 Data = data
             };
         }
-        public static ResponseByIdModel ErrorResponseById(int code, string message)
+        public static ResponseByIdModel<T> ErrorResponseById<T>(int code, string message)
         {
-            return new ResponseByIdModel()
+            return new ResponseByIdModel<T>()
             {
                 Code = code,
                 Success = false,
                 Message = message
             };
         }
-        public static ResponseModelCollection SuccessResponseCollection<T>(int code, string message, int count, T data)
+        public static ResponseModelCollection<T> SuccessResponseCollection<T>(int code, string message, int count, T data)
         {
-            return new ResponseModelCollection()
+            return new ResponseModelCollection<T>()
             {
                 Code = code,
                 Success = true,
                 Message = message,
-                Record = new ResultModel()
+                Record = new ResultModel<T>()
                 {
                     Count = count,
                     Data = data
                 }
             };
         }
-        public static ResponseModelCollection ErrorResponseCollection(int code, string message)
+        public static ResponseModelCollection<T> ErrorResponseCollection<T>(int code, string message)
         {
-            return new ResponseModelCollection()
+            return new ResponseModelCollection<T>()
             {
                 Code = code,
                 Success = false,

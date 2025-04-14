@@ -1,8 +1,8 @@
 ﻿namespace ipog.Bon.Model
 {
-    public class RequestModel
+    public class RequestModel<T> 
     {
-        public dynamic? Data { get; set; }
+        public T? Data { get; set; }
     }
     public class RequestByIdModel
     {

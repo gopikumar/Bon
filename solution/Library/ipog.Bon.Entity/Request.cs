@@ -1,8 +1,8 @@
 ﻿namespace ipog.Bon.Entity
 {
-    public class Request
+    public class Request<T>
     {
-        public dynamic? Data { get; set; }
+        public T? Data { get; set; }
     }
     public class RequestById
     {

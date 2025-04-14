@@ -1,5 +1,4 @@
-﻿using ipog.Bon.Entity;
-using ipog.Bon.Model;
+﻿using ipog.Bon.Model;
 using ipog.Bon.Model.Users;
 using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +20,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModelCollection response = await _userService.Get(pagination);
+            ResponseModelCollection<UserModelCollection> response = await _userService.Get(pagination);
             if (response == null)
             {
                 return NotFound("Not found");
@@ -36,7 +35,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModelCollection response = await _userService.Get(pagination);
+            ResponseModelCollection<UserModelCollection> response = await _userService.Get(pagination);
             if (response == null)
             {
                 return NotFound("Not found");
@@ -51,7 +50,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid ID.");
             }
-            ResponseByIdModel response = await _userService.Find(id);
+            ResponseByIdModel<UserModel> response = await _userService.Find(id);
             if (response == null)
             {
                 return NotFound("User not found.");
@@ -66,7 +65,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModel response = await _userService.Add(model);
+            ResponseModel<UserModel> response = await _userService.Add(model);
             if (response == null)
             {
                 return NotFound("Insert failed.");
@@ -81,7 +80,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModel response = await _userService.Update(model);
+            ResponseModel<UserModel> response = await _userService.Update(model);
             if (response == null)
             {
                 return NotFound("Update failed.");
@@ -96,7 +95,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid ID.");
             }
-            ResponseByIdModel response = await _userService.Delete(id);
+            ResponseByIdModel<UserModel> response = await _userService.Delete(id);
             if (response == null)
             {
                 return NotFound("Delete failed.");
@@ -111,7 +110,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid ID.");
             }
-            ResponseByIdModel response = await _userService.IsActive(id, isActive);
+            ResponseByIdModel<UserModel> response = await _userService.IsActive(id, isActive);
             if (response == null)
             {
                 return NotFound("Update failed.");
