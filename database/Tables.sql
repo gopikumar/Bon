@@ -1,6 +1,6 @@
 USE [Bon]
 GO
-/****** Object:  Table [dbo].[Building]    Script Date: 26-02-2025 18:32:57 ******/
+/****** Object:  Table [dbo].[Building]    Script Date: 14-04-2025 20:00:18 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -21,7 +21,42 @@ CREATE TABLE [dbo].[Building](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Machine]    Script Date: 26-02-2025 18:32:57 ******/
+/****** Object:  Table [dbo].[Customers]    Script Date: 14-04-2025 20:00:18 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Customers](
+	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[UId] [uniqueidentifier] NULL,
+	[CustomerTypeId] [bigint] NULL,
+	[Name] [nvarchar](100) NULL,
+	[GSTNumber] [nvarchar](50) NULL,
+	[Landline] [nvarchar](20) NULL,
+	[Mobile] [nvarchar](20) NULL,
+	[Email] [nvarchar](50) NULL,
+	[ActionBy] [bigint] NULL,
+	[ActionDate] [datetime] NULL,
+	[IsActive] [bit] NULL
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[CustomerType]    Script Date: 14-04-2025 20:00:18 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[CustomerType](
+	[Id] [bigint] NOT NULL,
+	[Name] [nvarchar](50) NULL,
+	[Notes] [nvarchar](250) NULL,
+	[IsActive] [bit] NULL,
+ CONSTRAINT [PK_CustomerType] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Machine]    Script Date: 14-04-2025 20:00:18 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -50,7 +85,7 @@ CREATE TABLE [dbo].[Machine](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[MachineMaintenance]    Script Date: 26-02-2025 18:32:57 ******/
+/****** Object:  Table [dbo].[MachineMaintenance]    Script Date: 14-04-2025 20:00:18 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -74,7 +109,7 @@ CREATE TABLE [dbo].[MachineMaintenance](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[Role]    Script Date: 26-02-2025 18:32:57 ******/
+/****** Object:  Table [dbo].[Role]    Script Date: 14-04-2025 20:00:18 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -83,6 +118,7 @@ CREATE TABLE [dbo].[Role](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
 	[UId] [uniqueidentifier] NOT NULL,
 	[Name] [nvarchar](100) NOT NULL,
+	[Control] [nvarchar](50) NULL,
 	[Notes] [nvarchar](500) NULL,
 	[ActionBy] [bigint] NOT NULL,
 	[ActionDate] [datetime] NOT NULL,
@@ -93,7 +129,7 @@ CREATE TABLE [dbo].[Role](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
-/****** Object:  Table [dbo].[User]    Script Date: 26-02-2025 18:32:57 ******/
+/****** Object:  Table [dbo].[User]    Script Date: 14-04-2025 20:00:18 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -115,6 +151,11 @@ CREATE TABLE [dbo].[User](
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[Customers]  WITH CHECK ADD  CONSTRAINT [FK_Customers_CustomerType] FOREIGN KEY([CustomerTypeId])
+REFERENCES [dbo].[CustomerType] ([Id])
+GO
+ALTER TABLE [dbo].[Customers] CHECK CONSTRAINT [FK_Customers_CustomerType]
 GO
 ALTER TABLE [dbo].[User]  WITH CHECK ADD  CONSTRAINT [FK_User_Role] FOREIGN KEY([RoleId])
 REFERENCES [dbo].[Role] ([Id])

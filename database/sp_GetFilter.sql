@@ -1,18 +1,18 @@
 USE [Bon]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilter]    Script Date: 27-02-2025 19:56:02 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilter]    Script Date: 14-04-2025 20:00:43 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-CREATE PROCEDURE [dbo].[sp_GetFilter]
+ALTER PROCEDURE [dbo].[sp_GetFilter]
 (
 @tableName NVARCHAR(100),
 @orderBy NVARCHAR(100),
 @sortBy NVARCHAR(4),
 @pageNumber INT,
 @pageSize INT,
-@filterColumns NVARCHAR(MAX) =null
+@filterColumns NVARCHAR(MAX)
 )
 AS
 BEGIN
@@ -36,6 +36,4 @@ BEGIN
 	EXEC sp_executesql @l_Sql, N'@pageNumber INT, @pageSize INT', @pageNumber, @pageSize;
 END
 
-
---EXEC sp_GetFilter '[User]', 'id', 'ASC', 1, 10;
-GO
+--EXEC sp_GetFilter '[User]', 'id', 'ASC', 1, 10, null;
