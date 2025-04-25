@@ -38,7 +38,7 @@ namespace ipog.Bon.Workflow.Response
             return new ResponseByModel<T>()
             {
                 Code = code,
-                Success = true,
+                Success = false,
                 Message = message
             };
         }
