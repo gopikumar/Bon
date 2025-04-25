@@ -43,7 +43,7 @@ namespace ipog.Bon.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("Id")]
+        [HttpGet]
         public async Task<IActionResult> GetById(Guid id)
         {
             if (id == Guid.Empty)
@@ -103,7 +103,7 @@ namespace ipog.Bon.Api.Controllers
             return Ok(response);
         }
 
-        [HttpGet("IsActive")]
+        [HttpPatch]
         public async Task<IActionResult> UpdateIsActive(Guid id, bool isActive)
         {
             if (id == Guid.Empty)

@@ -22,6 +22,7 @@ void Configure(WebApplication app)
     app.UseSwagger();
     app.UseSwaggerUI();
     //}  
+    app.UseCors("AllowAnyCorsPolicy");
 #if !DEBUG
     app.UseMiddleware<AuthorizationMiddleware>();
 #endif
