@@ -24,7 +24,7 @@ namespace ipog.Bon.Workflow.Service
             {
                 return UtilityResponse.SuccessResponseByModel<GetUserModel>(200, "Get successfully", await _mapper.CreateMap<GetUserModel, User>(item));
             }
-            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
+            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Invalid credential");
         }
 
         public async Task<ResponseByModel<GetUserModel>> UpdatePassword(UpdatePasswordModel request)
