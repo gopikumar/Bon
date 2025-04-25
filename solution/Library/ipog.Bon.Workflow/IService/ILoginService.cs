@@ -6,5 +6,6 @@ namespace ipog.Bon.Workflow.IService
     public interface ILoginService
     {
         Task<ResponseByModel<GetUserModel>> Validation(LoginModel request);
+        Task<ResponseByModel<GetUserModel>> UpdatePassword(UpdatePasswordModel request);
     }
 }

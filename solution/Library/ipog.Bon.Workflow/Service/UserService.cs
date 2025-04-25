@@ -58,6 +58,7 @@ namespace ipog.Bon.Workflow.Service
         }
         public async Task<ResponseModel<GetUserModel>> Add(UserModel model)
         {
+            model.Password = "123456";
             if (await _userRepository.Add(await _mapper.CreateMap<User, UserModel>(model)) is User item)
             {
                 return UtilityResponse.SuccessResponse<GetUserModel>(200, "Insert successfully", await _mapper.CreateMap<GetUserModel, User>(item));

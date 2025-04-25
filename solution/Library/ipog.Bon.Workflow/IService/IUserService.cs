@@ -2,7 +2,7 @@
 
 namespace ipog.Bon.Workflow.IService
 {
-    public interface IUserService : IGenericService<UserModelCollection, UserModel, GetUserModel>
+    public interface IUserService : IGenericService<UserModelCollection, GetUserModel, UserModel>
     {
     }
 }

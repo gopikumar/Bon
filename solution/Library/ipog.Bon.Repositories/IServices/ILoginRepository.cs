@@ -5,5 +5,6 @@ namespace ipog.Bon.Repositories.IServices
     public interface ILoginRepository 
     {
         Task<User> Validation(Login request);
+        Task<User> UpdatePassword(UpdatePassword request);
     }
 }

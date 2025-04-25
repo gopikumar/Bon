@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using ipog.Bon.Entity;
 using ipog.Bon.Entity.Roles;
 using ipog.Bon.Entity.Users;
@@ -18,7 +19,9 @@ namespace ipog.Bon.Workflow.Mapping
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<User, GetUserModel>();
             CreateMap<User, UserModelCollection>();
-            CreateMap<Login, LoginModel>().ReverseMap();
+
+            CreateMap<LoginModel, Login>();
+            CreateMap<UpdatePasswordModel, UpdatePassword>();
 
             CreateMap<Role, RoleModel>().ReverseMap();
             CreateMap<Role, GetRoleModel>();

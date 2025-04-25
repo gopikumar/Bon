@@ -26,5 +26,14 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
+
+        public async Task<ResponseByModel<GetUserModel>> UpdatePassword(UpdatePasswordModel request)
+        {
+            if (await _loginRepository.UpdatePassword(await _mapper.CreateMap<UpdatePassword, UpdatePasswordModel>(request)) is User item)
+            {
+                return UtilityResponse.SuccessResponseByModel<GetUserModel>(200, "Get successfully", await _mapper.CreateMap<GetUserModel, User>(item));
+            }
+            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
+        }
     }
 }

@@ -29,5 +29,18 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<User>("sp_Login", parameters, commandType: CommandType.StoredProcedure);
         }
+
+        public async Task<User?> UpdatePassword(UpdatePassword request)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "updatepassword",
+                    username = request.UserName,
+                    password = request.Password,
+                    newpassword = request.NewPassword
+                });
+            return await _connection.QueryFirstOrDefaultAsync<User>("sp_Login", parameters, commandType: CommandType.StoredProcedure);
+        }
     }
 }
