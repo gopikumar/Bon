@@ -23,7 +23,7 @@ namespace ipog.Bon.Api.Middlewares
             //    };
             //    await context.Response.WriteAsJsonAsync(error);
             //}
-            if (context.Request.Headers["Authorization"].Count == 0)
+            if (!context.Request.Headers.ContainsKey("Authorization"))
             {
                 Error error = new()
                 {
@@ -32,23 +32,37 @@ namespace ipog.Bon.Api.Middlewares
                     Source = context.Request.Path
                 };
                 await context.Response.WriteAsJsonAsync(error);
+                return;
             }
-            else if (context.Request.Headers["Authorization"].Count > 0)
+
+            string? authorizationHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+            if (string.IsNullOrWhiteSpace(authorizationHeader) || !authorizationHeader.Contains(" "))
             {
-                string token = context.Request.Headers["Authorization"].FirstOrDefault().Split(" ")[1];
-                JwtSecurityToken? jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
-                if (jwtToken?.ValidTo < DateTime.UtcNow)
+                Error error = new()
                 {
-                    Error error = new()
-                    {
-                        Success = false,
-                        Message = "Token expired!",
-                        Source = context.Request.Path
-                    };
-                    await context.Response.WriteAsJsonAsync(error);
-                }
-                else await next(context);
+                    Success = false,
+                    Message = "Invalid Authorization header format",
+                    Source = context.Request.Path
+                };
+                await context.Response.WriteAsJsonAsync(error);
+                return;
             }
+
+            string token = authorizationHeader.Split(" ")[1];
+            JwtSecurityToken? jwtToken = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+            if (jwtToken?.ValidTo < DateTime.UtcNow)
+            {
+                Error error = new()
+                {
+                    Success = false,
+                    Message = "Token expired!",
+                    Source = context.Request.Path
+                };
+                await context.Response.WriteAsJsonAsync(error);
+                return;
+            }
+
+            await next(context);
 
         }
     }

@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using ipog.Bon.Entity;
+using ipog.Bon.Entity.Roles;
 using ipog.Bon.Entity.Users;
 using ipog.Bon.Repositories.IServices;
 using Microsoft.Data.SqlClient;
@@ -9,16 +10,16 @@ using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
 {
-    public class UserRepository : IUserRepository
+    public class RoleRepository : IRoleRepository
     {
         private readonly IConfiguration _configuration;
         private readonly SqlConnection _connection;
-        public UserRepository(IConfiguration configuration)
+        public RoleRepository(IConfiguration configuration)
         {
             _configuration = configuration;
             _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
-        public async Task<(int, IEnumerable<User>)> Get(Pagination pagination)
+        public async Task<(int, IEnumerable<Role>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
                 new
@@ -27,20 +28,20 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_UserGet", parameters, commandType: CommandType.StoredProcedure))
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_RoleGet", parameters, commandType: CommandType.StoredProcedure))
             {
-                return (response.ReadFirst<int>(), response.Read<User>());
+                return (response.ReadFirst<int>(), response.Read<Role>());
             }
         }
-        public async Task<(int, IEnumerable<User>)> Get(FilterPagination pagination)
+        public async Task<(int, IEnumerable<Role>)> Get(FilterPagination pagination)
         {
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_UserGet",
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_RoleGet",
                 PaginationFilter.GetPaginationParameters(pagination), commandType: CommandType.StoredProcedure))
             {
-                return (response.ReadFirst<int>(), response.Read<User>());
+                return (response.ReadFirst<int>(), response.Read<Role>());
             }
         }
-        public async Task<User?> Find(Guid uid)
+        public async Task<Role?> Find(Guid uid)
         {
             DynamicParameters parameters = new(
                 new
@@ -48,26 +49,23 @@ namespace ipog.Bon.Repositories.Services
                     action = "Get",
                     uid
                 });
-            return await _connection.QueryFirstOrDefaultAsync<User>("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<Role>("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
         }
-        public async Task<User?> Add(User model)
+        public async Task<Role?> Add(Role model)
         {
             DynamicParameters parameters = new(
                 new
                 {
                     action = "Add",
                     name = model.Name,
-                    lastName = model.LastName,
-                    password = model.Password,
-                    email = model.Email,
-                    mobile = model.Mobile,
-                    roleId = model.RoleId,
+                    control = model.Control,
+                    notes = model.Notes,
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<User>("sp_User", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<Role>("sp_Role", parameters, commandType: CommandType.StoredProcedure);
         }
-        public async Task<User?> Update(User model)
+        public async Task<Role?> Update(Role model)
         {
             DynamicParameters parameters = new(
                 new
@@ -75,15 +73,12 @@ namespace ipog.Bon.Repositories.Services
                     action = "Update",
                     uId = model.UId,
                     name = model.Name,
-                    lastName = model.LastName,
-                    password = model.Password,
-                    email = model.Email,
-                    mobile = model.Mobile,
-                    roleId = model.RoleId,
+                    control = model.Control,
+                    notes = model.Notes,
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<User>("sp_User", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<Role>("sp_Role", parameters, commandType: CommandType.StoredProcedure);
         }
         public async Task<int> Delete(Guid uid)
         {
@@ -93,9 +88,9 @@ namespace ipog.Bon.Repositories.Services
                     action = "Delete",
                     uid
                 });
-            return await _connection.ExecuteAsync("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.ExecuteAsync("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
         }
-        public async Task<User?> IsActive(Guid uid, bool isActive)
+        public async Task<Role?> IsActive(Guid uid, bool isActive)
         {
             DynamicParameters parameters = new(
                 new
@@ -104,7 +99,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     isActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<User>("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<Role>("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

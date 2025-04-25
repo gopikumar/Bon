@@ -24,7 +24,7 @@ namespace ipog.Bon.Api.Middlewares
                 {
                     Success = false,
                     Message = ex.Message,
-                    Source = ex.Source
+                    Source = ex.Source ?? "Unknown"
                 };
                 await context.Response.WriteAsJsonAsync(error);
             }

@@ -16,9 +16,9 @@ namespace ipog.Bon.Workflow.Mapping
         #endregion
 
         #region Events
-        private async Task<T> Map<T, U>(U entity)
+        private  Task<T> Map<T, U>(U entity)
         {
-            return _mapper.Map<T>(entity);
+            return Task.FromResult(_mapper.Map<T>(entity));
         }
         public async Task<T> CreateMap<T, U>(U entity)
         {

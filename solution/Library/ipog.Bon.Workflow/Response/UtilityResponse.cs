@@ -23,9 +23,9 @@ namespace ipog.Bon.Workflow.Response
                 Message = message
             };
         }
-        public static ResponseByIdModel<T> SuccessResponseById<T>(int code, string message, T data)
+        public static ResponseByModel<T> SuccessResponseByModel<T>(int code, string message, T data)
         {
-            return new ResponseByIdModel<T>()
+            return new ResponseByModel<T>()
             {
                 Code = code,
                 Success = true,
@@ -33,12 +33,12 @@ namespace ipog.Bon.Workflow.Response
                 Data = data
             };
         }
-        public static ResponseByIdModel<T> ErrorResponseById<T>(int code, string message)
+        public static ResponseByModel<T> ErrorResponseByModel<T>(int code, string message)
         {
-            return new ResponseByIdModel<T>()
+            return new ResponseByModel<T>()
             {
                 Code = code,
-                Success = false,
+                Success = true,
                 Message = message
             };
         }
@@ -59,6 +59,24 @@ namespace ipog.Bon.Workflow.Response
         public static ResponseModelCollection<T> ErrorResponseCollection<T>(int code, string message)
         {
             return new ResponseModelCollection<T>()
+            {
+                Code = code,
+                Success = false,
+                Message = message
+            };
+        }
+        public static ResponseModel SuccessResponse(int code, string message)
+        {
+            return new ResponseModel()
+            {
+                Code = code,
+                Success = true,
+                Message = message
+            };
+        }
+        public static ResponseModel ErrorResponse(int code, string message)
+        {
+            return new ResponseModel()
             {
                 Code = code,
                 Success = false,

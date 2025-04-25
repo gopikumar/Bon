@@ -13,9 +13,9 @@ namespace ipog.Bon.Workflow.Service
     {
         private readonly IUserRepository _userRepository;
         private readonly IMapping _mapper;
-        public UserService(IUserRepository iUserRepository, IMapping mapper)
+        public UserService(IUserRepository userRepository, IMapping mapper)
         {
-            _userRepository = iUserRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
         public async Task<ResponseModelCollection<UserModelCollection>> Get(PaginationModel pagination)
@@ -48,49 +48,50 @@ namespace ipog.Bon.Workflow.Service
             }
             return new();
         }
-        public async Task<ResponseByIdModel<UserModel>> Find(Guid uid)
+        public async Task<ResponseByModel<GetUserModel>> Find(Guid uid)
         {
             if (await _userRepository.Find(uid) is User item)
             {
-                return UtilityResponse.SuccessResponseById<UserModel>(200, "Get successfully", await _mapper.CreateMap<UserModel, User>(item));
+                return UtilityResponse.SuccessResponseByModel<GetUserModel>(200, "Get successfully", await _mapper.CreateMap<GetUserModel, User>(item));
             }
-            return UtilityResponse.ErrorResponseById<UserModel>(404, "Data not found");
+            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
-        public async Task<ResponseModel<UserModel>> Add(UserModel model)
+        public async Task<ResponseModel<GetUserModel>> Add(UserModel model)
         {
             if (await _userRepository.Add(await _mapper.CreateMap<User, UserModel>(model)) is User item)
             {
-                return UtilityResponse.SuccessResponse<UserModel>(200, "Insert successfully", await _mapper.CreateMap<UserModel, User>(item));
+                return UtilityResponse.SuccessResponse<GetUserModel>(200, "Insert successfully", await _mapper.CreateMap<GetUserModel, User>(item));
             }
-            return UtilityResponse.ErrorResponse<UserModel>(404, "Insert failed");
+            return UtilityResponse.ErrorResponse<GetUserModel>(404, "Insert failed");
         }
-        public async Task<ResponseModel<UserModel>> Update(UserModel model)
+        public async Task<ResponseModel<GetUserModel>> Update(UserModel model)
         {
             if (await _userRepository.Update(await _mapper.CreateMap<User, UserModel>(model)) is User item)
             {
-                return UtilityResponse.SuccessResponse<UserModel>(200, "Update successfully", await _mapper.CreateMap<UserModel, User>(item));
+                return UtilityResponse.SuccessResponse<GetUserModel>(200, "Update successfully", await _mapper.CreateMap<GetUserModel, User>(item));
             }
-            return UtilityResponse.ErrorResponse<UserModel>(404, "Update failed");
+            return UtilityResponse.ErrorResponse<GetUserModel>(404, "Update failed");
         }
-        public async Task<ResponseByIdModel<UserModel>> Delete(Guid uid)
+        public async Task<ResponseModel> Delete(Guid uid)
         {
             if (await _userRepository.Delete(uid) is int isDelete)
             {
                 if (isDelete == 0)
                 {
-                    return UtilityResponse.ErrorResponseById<UserModel>(404, "Data not found");
+                    return UtilityResponse.ErrorResponse(404, "Data not found");
                 }
-                return UtilityResponse.SuccessResponseById<UserModel>(204, "Deleted successfully", null);
+                return UtilityResponse.SuccessResponse(204, "Deleted successfully");
             }
             return new();
         }
-        public async Task<ResponseByIdModel<UserModel>> IsActive(Guid uid, bool isActive)
+        public async Task<ResponseByModel<GetUserModel>> IsActive(Guid uid, bool isActive)
         {
             if (await _userRepository.IsActive(uid, isActive) is User item)
             {
-                return UtilityResponse.SuccessResponseById<UserModel>(200, "Active status updated successfully", await _mapper.CreateMap<UserModel, User>(item));
+                return UtilityResponse.SuccessResponseByModel<GetUserModel>(200, "Active status updated successfully", await _mapper.CreateMap<GetUserModel, User>(item));
             }
-            return UtilityResponse.ErrorResponseById<UserModel>(404, "Data not found");
+            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
+        
     }
 }

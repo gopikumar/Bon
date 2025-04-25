@@ -1,16 +1,16 @@
 ﻿using ipog.Bon.Model;
-using ipog.Bon.Model.Users;
+using ipog.Bon.Model.Roles;
 using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ipog.Bon.Api.Controllers
 {
-    public class UserController : BaseController<UserController>
+    public class RoleController : BaseController<RoleController>
     {
-        private readonly IUserService _userService;
-        public UserController(IUserService userService, ILogger<UserController> logger) : base(logger)
+        private readonly IRoleService _roleService;
+        public RoleController(IRoleService roleService, ILogger<RoleController> logger) : base(logger)
         {
-            _userService = userService;
+            _roleService = roleService;
         }
 
         [HttpPost("Filter")]
@@ -20,7 +20,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModelCollection<UserModelCollection> response = await _userService.Get(pagination);
+            ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
             if (response == null)
             {
                 return NotFound("Not found");
@@ -35,7 +35,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModelCollection<UserModelCollection> response = await _userService.Get(pagination);
+            ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
             if (response == null)
             {
                 return NotFound("Not found");
@@ -50,22 +50,22 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid ID.");
             }
-            ResponseByModel<GetUserModel> response = await _userService.Find(id);
+            ResponseByModel<GetRoleModel> response = await _roleService.Find(id);
             if (response == null)
             {
-                return NotFound("User not found.");
+                return NotFound("Role not found.");
             }
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert(UserModel model)
+        public async Task<IActionResult> Insert(RoleModel model)
         {
             if (model == null)
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModel<GetUserModel> response = await _userService.Add(model);
+            ResponseModel<GetRoleModel> response = await _roleService.Add(model);
             if (response == null)
             {
                 return NotFound("Insert failed.");
@@ -74,13 +74,13 @@ namespace ipog.Bon.Api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(UserModel model)
+        public async Task<IActionResult> Update(RoleModel model)
         {
             if (model == null || model.UId == Guid.Empty)
             {
                 return BadRequest("Invalid request.");
             }
-            ResponseModel<GetUserModel> response = await _userService.Update(model!);
+            ResponseModel<GetRoleModel> response = await _roleService.Update(model!);
             if (response == null)
             {
                 return NotFound("Update failed.");
@@ -95,7 +95,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid ID.");
             }
-            ResponseModel response = await _userService.Delete(id);
+            ResponseModel response = await _roleService.Delete(id);
             if (response == null)
             {
                 return NotFound("Delete failed.");
@@ -110,7 +110,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid ID.");
             }
-            ResponseByModel<GetUserModel> response = await _userService.IsActive(id, isActive);
+            ResponseByModel<GetRoleModel> response = await _roleService.IsActive(id, isActive);
             if (response == null)
             {
                 return NotFound("Update failed.");
