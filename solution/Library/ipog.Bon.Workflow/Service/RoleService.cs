@@ -20,33 +20,23 @@ namespace ipog.Bon.Workflow.Service
         }
         public async Task<ResponseModelCollection<RoleModelCollection>> Get(PaginationModel pagination)
         {
-            if (await _roleRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination)) is var (count, items))
+            var (count, items) = await _roleRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination));
+            if (count.Equals(0) || items == null || !items.Any())
             {
-                if (count.Equals(0) || items == null || !items.Any())
-                {
-                    return UtilityResponse.ErrorResponseCollection<RoleModelCollection>(404, "Data not found");
-                }
-                if (await _mapper.CreateMap<RoleModelCollection, List<Role>>(items.ToList()) is RoleModelCollection roleModel)
-                {
-                    return UtilityResponse.SuccessResponseCollection<RoleModelCollection>(200, "Get successfully", count, roleModel);
-                }
+                return UtilityResponse.ErrorResponseCollection<RoleModelCollection>(404, "Data not found");
             }
-            return new();
+            RoleModelCollection collection = await _mapper.CreateMap<RoleModelCollection, List<Role>>(items.ToList());
+            return UtilityResponse.SuccessResponseCollection<RoleModelCollection>(200, "Get successfully", count, collection);
         }
         public async Task<ResponseModelCollection<RoleModelCollection>> Get(FilterPaginationModel pagination)
         {
-            if (await _roleRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination)) is var (count, items))
+            var (count, items) = await _roleRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination));
+            if (count.Equals(0) || items == null || !items.Any())
             {
-                if (count.Equals(0) || items == null || !items.Any())
-                {
-                    return UtilityResponse.ErrorResponseCollection<RoleModelCollection>(404, "Data not found");
-                }
-                if (await _mapper.CreateMap<RoleModelCollection, List<Role>>(items.ToList()) is RoleModelCollection roleModel)
-                {
-                    return UtilityResponse.SuccessResponseCollection<RoleModelCollection>(200, "Get successfully", count, roleModel);
-                }
+                return UtilityResponse.ErrorResponseCollection<RoleModelCollection>(404, "Data not found");
             }
-            return new();
+            RoleModelCollection collection = await _mapper.CreateMap<RoleModelCollection, List<Role>>(items.ToList());
+            return UtilityResponse.SuccessResponseCollection<RoleModelCollection>(200, "Get successfully", count, collection);
         }
         public async Task<ResponseByModel<GetRoleModel>> Find(Guid uid)
         {
@@ -74,15 +64,12 @@ namespace ipog.Bon.Workflow.Service
         }
         public async Task<ResponseModel> Delete(Guid uid)
         {
-            if (await _roleRepository.Delete(uid) is int isDelete)
+            int isDelete = await _roleRepository.Delete(uid);
+            if (isDelete == 0)
             {
-                if (isDelete == 0)
-                {
-                    return UtilityResponse.ErrorResponse(404, "Data not found");
-                }
-                return UtilityResponse.SuccessResponse(204, "Deleted successfully");
+                return UtilityResponse.ErrorResponse(404, "Id not found");
             }
-            return new();
+            return UtilityResponse.SuccessResponse(204, "Deleted successfully");
         }
         public async Task<ResponseByModel<GetRoleModel>> IsActive(Guid uid, bool isActive)
         {

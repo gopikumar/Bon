@@ -21,10 +21,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request.");
             }
             ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
-            if (response == null)
-            {
-                return NotFound("Not found");
-            }
             return Ok(response);
         }
 
@@ -36,10 +32,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request.");
             }
             ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
-            if (response == null)
-            {
-                return NotFound("Not found");
-            }
             return Ok(response);
         }
 
@@ -51,10 +43,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid ID.");
             }
             ResponseByModel<GetRoleModel> response = await _roleService.Find(id);
-            if (response == null)
-            {
-                return NotFound("Role not found.");
-            }
             return Ok(response);
         }
 
@@ -66,10 +54,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request.");
             }
             ResponseModel<GetRoleModel> response = await _roleService.Add(model);
-            if (response == null)
-            {
-                return NotFound("Insert failed.");
-            }
             return Ok(response);
         }
 
@@ -81,10 +65,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request.");
             }
             ResponseModel<GetRoleModel> response = await _roleService.Update(model!);
-            if (response == null)
-            {
-                return NotFound("Update failed.");
-            }
             return Ok(response);
         }
 
@@ -96,10 +76,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid ID.");
             }
             ResponseModel response = await _roleService.Delete(id);
-            if (response == null)
-            {
-                return NotFound("Delete failed.");
-            }
             return Ok(response);
         }
 
@@ -111,10 +87,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid ID.");
             }
             ResponseByModel<GetRoleModel> response = await _roleService.IsActive(id, isActive);
-            if (response == null)
-            {
-                return NotFound("Update failed.");
-            }
             return Ok(response);
         }
     }

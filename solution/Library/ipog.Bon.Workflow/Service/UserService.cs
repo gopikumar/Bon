@@ -18,36 +18,29 @@ namespace ipog.Bon.Workflow.Service
             _userRepository = userRepository;
             _mapper = mapper;
         }
+      
         public async Task<ResponseModelCollection<UserModelCollection>> Get(PaginationModel pagination)
         {
-            if (await _userRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination)) is var (count, items))
+            var (count, items) = await _userRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination));
+            if (count == 0 || items == null || !items.Any())
             {
-                if (count.Equals(0) || items == null || !items.Any())
-                {
-                    return UtilityResponse.ErrorResponseCollection<UserModelCollection>(404, "Data not found");
-                }
-                if (await _mapper.CreateMap<UserModelCollection, List<User>>(items.ToList()) is UserModelCollection userModel)
-                {
-                    return UtilityResponse.SuccessResponseCollection<UserModelCollection>(200, "Get successfully", count, userModel);
-                }
+                return UtilityResponse.ErrorResponseCollection<UserModelCollection>(404, "Data not found");
             }
-            return new();
+            UserModelCollection collection = await _mapper.CreateMap<UserModelCollection, List<User>>(items.ToList());
+            return UtilityResponse.SuccessResponseCollection<UserModelCollection>(200, "Get successfully", count, collection);
         }
+       
         public async Task<ResponseModelCollection<UserModelCollection>> Get(FilterPaginationModel pagination)
         {
-            if (await _userRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination)) is var (count, items))
+            var (count, items) = await _userRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination));
+            if (count == 0 || items == null || !items.Any())
             {
-                if (count.Equals(0) || items == null || !items.Any())
-                {
-                    return UtilityResponse.ErrorResponseCollection<UserModelCollection>(404, "Data not found");
-                }
-                if (await _mapper.CreateMap<UserModelCollection, List<User>>(items.ToList()) is UserModelCollection userModel)
-                {
-                    return UtilityResponse.SuccessResponseCollection<UserModelCollection>(200, "Get successfully", count, userModel);
-                }
+                return UtilityResponse.ErrorResponseCollection<UserModelCollection>(404, "Data not found");
             }
-            return new();
+            UserModelCollection collection = await _mapper.CreateMap<UserModelCollection, List<User>>(items.ToList());
+            return UtilityResponse.SuccessResponseCollection<UserModelCollection>(200, "Get successfully", count, collection);
         }
+     
         public async Task<ResponseByModel<GetUserModel>> Find(Guid uid)
         {
             if (await _userRepository.Find(uid) is User item)
@@ -56,6 +49,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
+      
         public async Task<ResponseModel<GetUserModel>> Add(UserModel model)
         {
             model.Password = "123456";
@@ -65,6 +59,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponse<GetUserModel>(404, "Insert failed");
         }
+       
         public async Task<ResponseModel<GetUserModel>> Update(UserModel model)
         {
             if (await _userRepository.Update(await _mapper.CreateMap<User, UserModel>(model)) is User item)
@@ -73,18 +68,17 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponse<GetUserModel>(404, "Update failed");
         }
+       
         public async Task<ResponseModel> Delete(Guid uid)
         {
-            if (await _userRepository.Delete(uid) is int isDelete)
+            int isDelete = await _userRepository.Delete(uid);
+            if (isDelete == 0)
             {
-                if (isDelete == 0)
-                {
-                    return UtilityResponse.ErrorResponse(404, "Data not found");
-                }
-                return UtilityResponse.SuccessResponse(204, "Deleted successfully");
+                return UtilityResponse.ErrorResponse(404, "Id not found");
             }
-            return new();
+            return UtilityResponse.SuccessResponse(204, "Deleted successfully");
         }
+       
         public async Task<ResponseByModel<GetUserModel>> IsActive(Guid uid, bool isActive)
         {
             if (await _userRepository.IsActive(uid, isActive) is User item)
@@ -93,6 +87,23 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
-        
+
+        public async Task<ResponseModel> EmailValidation(string email)
+        {
+            if (await _userRepository.EmailValidation(email) is string response)
+            {
+                return UtilityResponse.SuccessResponse(204, "Email already exists");
+            }
+            return UtilityResponse.SuccessResponse(204, "");
+        }
+
+        public async Task<ResponseModel> MobileValidation(string mobile)
+        {
+            if (await _userRepository.MobileValidation(mobile) is string response)
+            {
+                return UtilityResponse.SuccessResponse(204, "Mobile already exists");
+            }
+            return UtilityResponse.SuccessResponse(204, "");
+        }
     }
 }

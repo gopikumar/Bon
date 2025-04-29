@@ -1,5 +1,4 @@
-﻿using ipog.Bon.Entity.Users;
-using ipog.Bon.Model;
+﻿using ipog.Bon.Model;
 using ipog.Bon.Model.Users;
 using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
@@ -22,10 +21,10 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request");
             }
             ResponseByModel<GetUserModel> response = await _loginService.Validation(request!);
-            if (response == null)
-            {
-                return NotFound("credentials not found.");
-            }
+            //if (response == null)
+            //{
+            //    return NotFound("credentials not found.");
+            //}
             return Ok(response);
         }
 
@@ -37,10 +36,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request");
             }
             ResponseByModel<GetUserModel> response = await _loginService.UpdatePassword(request!);
-            if (response == null)
-            {
-                return NotFound("credentials not found.");
-            }
             return Ok(response);
         }
     }

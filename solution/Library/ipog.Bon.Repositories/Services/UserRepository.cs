@@ -106,5 +106,27 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<User>("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
+
+        public async Task<string> EmailValidation(string email)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Email",
+                    email
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_UserValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<string> MobileValidation(string mobile)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Mobile",
+                    mobile
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_UserValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
     }
 }
