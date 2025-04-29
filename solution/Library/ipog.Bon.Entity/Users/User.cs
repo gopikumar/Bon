@@ -11,6 +11,7 @@
         public string Password { get; set; } = string.Empty;
         public Int64 RoleId { get; set; }
         public string? RoleName { get; set; }
+        public bool IsLogin { get; set; }
         public Int64 ActionBy { get; set; }
         public DateTime ActionDate { get; set; }
         public bool IsActive { get; set; }
