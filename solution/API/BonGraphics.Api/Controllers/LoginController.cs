@@ -7,10 +7,10 @@ namespace ipog.Bon.Api.Controllers
 {
     public class LoginController : BaseController<LoginController>
     {
-        private readonly ILoginService _loginService;
-        public LoginController(ILoginService loginService, ILogger<LoginController> logger) : base(logger)
+        private readonly IUserService _userService;
+        public LoginController(IUserService userService, ILogger<LoginController> logger) : base(logger)
         {
-            _loginService = loginService;
+            _userService = userService;
         }
 
         [HttpPost]
@@ -20,7 +20,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request");
             }
-            ResponseByModel<GetUserModel> response = await _loginService.Validation(request!);
+            ResponseByModel<GetUserModel> response = await _userService.Validation(request!);
             //if (response == null)
             //{
             //    return NotFound("credentials not found.");
@@ -35,7 +35,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request");
             }
-            ResponseByModel<GetUserModel> response = await _loginService.UpdatePassword(request!);
+            ResponseByModel<GetUserModel> response = await _userService.UpdatePassword(request!);
             return Ok(response);
         }
     }

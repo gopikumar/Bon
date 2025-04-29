@@ -72,13 +72,11 @@ namespace ipog.Bon.Api
         public static void ConfigureWorkflow(this IServiceCollection services)
         {
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ILoginService, LoginService>();
             services.AddTransient<IRoleService, RoleService>();
         }
         public static void ConfigureRepository(this IServiceCollection services)
         {
             services.AddTransient<IUserRepository, UserRepository>();
-            services.AddTransient<ILoginRepository, LoginRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
         }
 

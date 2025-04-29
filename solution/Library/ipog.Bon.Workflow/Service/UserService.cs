@@ -105,5 +105,23 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.SuccessResponse(204, "");
         }
+
+        public async Task<ResponseByModel<GetUserModel>> Validation(LoginModel request)
+        {
+            if (await _userRepository.Validation(await _mapper.CreateMap<Login, LoginModel>(request)) is User item)
+            {
+                return UtilityResponse.SuccessResponseByModel<GetUserModel>(200, "Get successfully", await _mapper.CreateMap<GetUserModel, User>(item));
+            }
+            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Invalid credential");
+        }
+
+        public async Task<ResponseByModel<GetUserModel>> UpdatePassword(UpdatePasswordModel request)
+        {
+            if (await _userRepository.UpdatePassword(await _mapper.CreateMap<UpdatePassword, UpdatePasswordModel>(request)) is User item)
+            {
+                return UtilityResponse.SuccessResponseByModel<GetUserModel>(200, "Get successfully", await _mapper.CreateMap<GetUserModel, User>(item));
+            }
+            return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
+        }
     }
 }

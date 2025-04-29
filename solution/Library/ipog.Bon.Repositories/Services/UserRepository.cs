@@ -18,6 +18,7 @@ namespace ipog.Bon.Repositories.Services
             _configuration = configuration;
             _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
+       
         public async Task<(int, IEnumerable<User>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
@@ -32,6 +33,7 @@ namespace ipog.Bon.Repositories.Services
                 return (response.ReadFirst<int>(), response.Read<User>());
             }
         }
+      
         public async Task<(int, IEnumerable<User>)> Get(FilterPagination pagination)
         {
             using (GridReader response = await _connection.QueryMultipleAsync("sp_UserGet",
@@ -40,6 +42,7 @@ namespace ipog.Bon.Repositories.Services
                 return (response.ReadFirst<int>(), response.Read<User>());
             }
         }
+      
         public async Task<User?> Find(Guid uid)
         {
             DynamicParameters parameters = new(
@@ -50,6 +53,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<User>("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
+      
         public async Task<User?> Add(User model)
         {
             DynamicParameters parameters = new(
@@ -67,6 +71,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<User>("sp_User", parameters, commandType: CommandType.StoredProcedure);
         }
+     
         public async Task<User?> Update(User model)
         {
             DynamicParameters parameters = new(
@@ -85,6 +90,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<User>("sp_User", parameters, commandType: CommandType.StoredProcedure);
         }
+     
         public async Task<int> Delete(Guid uid)
         {
             DynamicParameters parameters = new(
@@ -95,6 +101,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.ExecuteAsync("sp_UserById", parameters, commandType: CommandType.StoredProcedure);
         }
+      
         public async Task<User?> IsActive(Guid uid, bool isActive)
         {
             DynamicParameters parameters = new(
@@ -127,6 +134,31 @@ namespace ipog.Bon.Repositories.Services
                     mobile
                 });
             return await _connection.QueryFirstOrDefaultAsync<string>("sp_UserValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<User?> Validation(Login request)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "employee",
+                    username = request.UserName,
+                    password = request.Password
+                });
+            return await _connection.QueryFirstOrDefaultAsync<User>("sp_Login", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<User?> UpdatePassword(UpdatePassword request)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "updatepassword",
+                    username = request.UserName,
+                    password = request.Password,
+                    newpassword = request.NewPassword
+                });
+            return await _connection.QueryFirstOrDefaultAsync<User>("sp_Login", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }
