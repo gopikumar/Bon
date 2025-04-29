@@ -57,7 +57,6 @@ namespace ipog.Bon.Api.Controllers
             return Ok(response);
         }
 
-
         [HttpGet("Mobile")]
         public async Task<IActionResult> MobileValidation(string mobile)
         {

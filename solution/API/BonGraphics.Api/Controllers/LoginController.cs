@@ -21,10 +21,6 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid request");
             }
             ResponseByModel<GetUserModel> response = await _userService.Validation(request!);
-            //if (response == null)
-            //{
-            //    return NotFound("credentials not found.");
-            //}
             return Ok(response);
         }
 

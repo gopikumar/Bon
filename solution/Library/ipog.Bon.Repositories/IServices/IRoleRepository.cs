@@ -4,5 +4,6 @@ namespace ipog.Bon.Repositories.IServices
 {
     public interface IRoleRepository : IGenericRepository<Role>
     {
+        Task<string> NameValidation(string name);
     }
 }

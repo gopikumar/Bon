@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using Azure.Core;
+using Dapper;
 using ipog.Bon.Entity;
 using ipog.Bon.Entity.Roles;
 using ipog.Bon.Entity.Users;
@@ -6,6 +7,7 @@ using ipog.Bon.Repositories.IServices;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Reflection;
 using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
@@ -19,6 +21,7 @@ namespace ipog.Bon.Repositories.Services
             _configuration = configuration;
             _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
+      
         public async Task<(int, IEnumerable<Role>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
@@ -33,6 +36,7 @@ namespace ipog.Bon.Repositories.Services
                 return (response.ReadFirst<int>(), response.Read<Role>());
             }
         }
+      
         public async Task<(int, IEnumerable<Role>)> Get(FilterPagination pagination)
         {
             using (GridReader response = await _connection.QueryMultipleAsync("sp_RoleGet",
@@ -41,6 +45,7 @@ namespace ipog.Bon.Repositories.Services
                 return (response.ReadFirst<int>(), response.Read<Role>());
             }
         }
+      
         public async Task<Role?> Find(Guid uid)
         {
             DynamicParameters parameters = new(
@@ -51,6 +56,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<Role>("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
         }
+      
         public async Task<Role?> Add(Role model)
         {
             DynamicParameters parameters = new(
@@ -65,6 +71,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<Role>("sp_Role", parameters, commandType: CommandType.StoredProcedure);
         }
+     
         public async Task<Role?> Update(Role model)
         {
             DynamicParameters parameters = new(
@@ -80,6 +87,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.QueryFirstOrDefaultAsync<Role>("sp_Role", parameters, commandType: CommandType.StoredProcedure);
         }
+      
         public async Task<int> Delete(Guid uid)
         {
             DynamicParameters parameters = new(
@@ -90,6 +98,7 @@ namespace ipog.Bon.Repositories.Services
                 });
             return await _connection.ExecuteAsync("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
         }
+       
         public async Task<Role?> IsActive(Guid uid, bool isActive)
         {
             DynamicParameters parameters = new(
@@ -100,6 +109,17 @@ namespace ipog.Bon.Repositories.Services
                     isActive
                 });
             return await _connection.QueryFirstOrDefaultAsync<Role>("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<string> NameValidation(string name)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Name",
+                    name
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_RoleValidation", parameters, commandType: CommandType.StoredProcedure);
         }
     }
 }

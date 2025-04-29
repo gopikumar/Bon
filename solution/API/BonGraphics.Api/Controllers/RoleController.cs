@@ -1,6 +1,7 @@
 ﻿using ipog.Bon.Model;
 using ipog.Bon.Model.Roles;
 using ipog.Bon.Workflow.IService;
+using ipog.Bon.Workflow.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ipog.Bon.Api.Controllers
@@ -43,6 +44,17 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid ID.");
             }
             ResponseByModel<GetRoleModel> response = await _roleService.Find(id);
+            return Ok(response);
+        }
+
+        [HttpGet("Name")]
+        public async Task<IActionResult> NameValidation(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Kindly pass the name");
+            }
+            ResponseModel response = await _roleService.NameValidation(name);
             return Ok(response);
         }
 
