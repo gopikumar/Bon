@@ -88,18 +88,18 @@ namespace ipog.Bon.Workflow.Service
             return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
 
-        public async Task<ResponseModel> EmailValidation(string email)
+        public async Task<ResponseModel> EmailValidation(Guid? uid, string email)
         {
-            if (await _userRepository.EmailValidation(email) is string response)
+            if (await _userRepository.EmailValidation(uid,email) is string response)
             {
                 return UtilityResponse.SuccessResponse(204, "Email already exists");
             }
             return UtilityResponse.SuccessResponse(204, "");
         }
 
-        public async Task<ResponseModel> MobileValidation(string mobile)
+        public async Task<ResponseModel> MobileValidation(Guid? uid, string mobile)
         {
-            if (await _userRepository.MobileValidation(mobile) is string response)
+            if (await _userRepository.MobileValidation(uid, mobile) is string response)
             {
                 return UtilityResponse.SuccessResponse(204, "Mobile already exists");
             }

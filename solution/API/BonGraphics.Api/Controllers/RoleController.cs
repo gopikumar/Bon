@@ -19,7 +19,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (pagination == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
             }
             ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
             return Ok(response);
@@ -30,7 +30,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (pagination == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
             }
             ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
             return Ok(response);
@@ -41,20 +41,20 @@ namespace ipog.Bon.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Invalid ID.");
+                return BadRequest("Invalid id");
             }
             ResponseByModel<GetRoleModel> response = await _roleService.Find(id);
             return Ok(response);
         }
 
         [HttpGet("Name")]
-        public async Task<IActionResult> NameValidation(string name)
+        public async Task<IActionResult> NameValidation(Guid? uid, string name)
         {
             if (string.IsNullOrEmpty(name))
             {
                 return BadRequest("Kindly pass the name");
             }
-            ResponseModel response = await _roleService.NameValidation(name);
+            ResponseModel response = await _roleService.NameValidation(uid, name);
             return Ok(response);
         }
 
@@ -63,7 +63,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (model == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
             }
             ResponseModel<GetRoleModel> response = await _roleService.Add(model);
             return Ok(response);
@@ -72,9 +72,13 @@ namespace ipog.Bon.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(RoleModel model)
         {
-            if (model == null || model.UId == Guid.Empty)
+            if (model == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
+            }
+            if (model.UId == null || model.UId == Guid.Empty)
+            {
+                return BadRequest("Invalid uid");
             }
             ResponseModel<GetRoleModel> response = await _roleService.Update(model!);
             return Ok(response);
@@ -85,7 +89,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Invalid ID.");
+                return BadRequest("Invalid id");
             }
             ResponseModel response = await _roleService.Delete(id);
             return Ok(response);
@@ -96,7 +100,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Invalid ID.");
+                return BadRequest("Invalid id");
             }
             ResponseByModel<GetRoleModel> response = await _roleService.IsActive(id, isActive);
             return Ok(response);

@@ -3,7 +3,7 @@
     public class User
     {
         public Int64 Id { get; set; }
-        public Guid UId { get; set; }
+        public Guid? UId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

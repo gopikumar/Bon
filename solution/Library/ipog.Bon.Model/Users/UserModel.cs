@@ -4,8 +4,7 @@ namespace ipog.Bon.Model.Users
 {
     public class UserModel
     {
-        [DefaultValue("00000000-0000-0000-0000-000000000000")]
-        public Guid UId { get; set; }
+        public Guid? UId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;

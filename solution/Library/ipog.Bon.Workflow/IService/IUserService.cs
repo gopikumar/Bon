@@ -7,7 +7,7 @@ namespace ipog.Bon.Workflow.IService
     {
         Task<ResponseByModel<GetUserModel>> Validation(LoginModel request);
         Task<ResponseByModel<GetUserModel>> UpdatePassword(UpdatePasswordModel request);
-        Task<ResponseModel> EmailValidation(string email);
-        Task<ResponseModel> MobileValidation(string mobile);
+        Task<ResponseModel> EmailValidation(Guid? uid, string email);
+        Task<ResponseModel> MobileValidation(Guid? uid, string mobile);
     }
 }

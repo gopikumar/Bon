@@ -6,7 +6,7 @@ namespace ipog.Bon.Repositories.IServices
     {
         Task<User> Validation(Login request);
         Task<User> UpdatePassword(UpdatePassword request);
-        Task<string> EmailValidation(string email);
-        Task<string> MobileValidation(string mobile);
+        Task<string> EmailValidation(Guid? uid, string email);
+        Task<string> MobileValidation(Guid? uid, string mobile);
     }
 }

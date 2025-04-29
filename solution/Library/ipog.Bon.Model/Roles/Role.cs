@@ -5,8 +5,7 @@ namespace ipog.Bon.Model.Roles
 {
     public class RoleModel
     {
-        [DefaultValue("00000000-0000-0000-0000-000000000000")]
-        public Guid UId { get; set; }
+        public Guid? UId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Control { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;

@@ -2,6 +2,7 @@
 using ipog.Bon.Model.Users;
 using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace ipog.Bon.Api.Controllers
 {
@@ -18,7 +19,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (pagination == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
             }
             ResponseModelCollection<UserModelCollection> response = await _userService.Get(pagination);
             return Ok(response);
@@ -29,7 +30,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (pagination == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
             }
             ResponseModelCollection<UserModelCollection> response = await _userService.Get(pagination);
             return Ok(response);
@@ -40,31 +41,31 @@ namespace ipog.Bon.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Invalid ID.");
+                return BadRequest("Invalid id");
             }
             ResponseByModel<GetUserModel> response = await _userService.Find(id);
             return Ok(response);
         }
 
         [HttpGet("Email")]
-        public async Task<IActionResult> EmailValidation(string email)
+        public async Task<IActionResult> EmailValidation(Guid? uid, string email)
         {
             if (string.IsNullOrEmpty(email))
             {
                 return BadRequest("Kindly pass the email");
             }
-            ResponseModel response = await _userService.EmailValidation(email);
+            ResponseModel response = await _userService.EmailValidation(uid, email);
             return Ok(response);
         }
 
         [HttpGet("Mobile")]
-        public async Task<IActionResult> MobileValidation(string mobile)
+        public async Task<IActionResult> MobileValidation(Guid? uid, string mobile)
         {
             if (string.IsNullOrEmpty(mobile))
             {
                 return BadRequest("Kindly pass the mobile");
             }
-            ResponseModel response = await _userService.MobileValidation(mobile);
+            ResponseModel response = await _userService.MobileValidation(uid, mobile);
             return Ok(response);
         }
 
@@ -73,7 +74,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (model == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
             }
             ResponseModel<GetUserModel> response = await _userService.Add(model);
             return Ok(response);
@@ -82,9 +83,13 @@ namespace ipog.Bon.Api.Controllers
         [HttpPut]
         public async Task<IActionResult> Update(UserModel model)
         {
-            if (model == null || model.UId == Guid.Empty)
+            if (model == null)
             {
-                return BadRequest("Invalid request.");
+                return BadRequest("Invalid request");
+            }
+            if (model.UId == null || model.UId == Guid.Empty)
+            {
+                return BadRequest("Invalid uid");
             }
             ResponseModel<GetUserModel> response = await _userService.Update(model!);
             return Ok(response);
@@ -95,7 +100,7 @@ namespace ipog.Bon.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Invalid ID.");
+                return BadRequest("Invalid id");
             }
             ResponseModel response = await _userService.Delete(id);
             return Ok(response);
@@ -106,10 +111,11 @@ namespace ipog.Bon.Api.Controllers
         {
             if (id == Guid.Empty)
             {
-                return BadRequest("Invalid ID.");
+                return BadRequest("Invalid id");
             }
             ResponseByModel<GetUserModel> response = await _userService.IsActive(id, isActive);
             return Ok(response);
         }
+   
     }
 }

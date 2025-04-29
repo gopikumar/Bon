@@ -87,9 +87,9 @@ namespace ipog.Bon.Workflow.Service
             return UtilityResponse.ErrorResponseByModel<GetRoleModel>(404, "Data not found");
         }
 
-        public async Task<ResponseModel> NameValidation(string name)
+        public async Task<ResponseModel> NameValidation(Guid? uid, string name)
         {
-            if (await _roleRepository.NameValidation(name) is string response)
+            if (await _roleRepository.NameValidation(uid,name) is string response)
             {
                 return UtilityResponse.SuccessResponse(204, "Name already exists");
             }
