@@ -1,4 +1,5 @@
 ﻿using ipog.Bon.Model;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ipog.Bon.Workflow.Response
 {
@@ -62,7 +63,11 @@ namespace ipog.Bon.Workflow.Response
             {
                 Code = code,
                 Success = false,
-                Message = message
+                Message = message,
+                Record = new ResultModel<T>()
+                {
+                    Count = 0
+                }
             };
         }
         public static ResponseModel SuccessResponse(int code, string message)

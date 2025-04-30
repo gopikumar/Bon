@@ -1,6 +1,6 @@
 USE [Bon]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Customer]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Customer]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9,7 +9,6 @@ CREATE PROCEDURE [dbo].[sp_Customer]
 (
 @action nvarchar(50),
 @UId  uniqueidentifier=null,
-@referenceid bigint,
 @typeid bigint,
 @name nvarchar(100),
 @gst nvarchar(50),
@@ -30,13 +29,12 @@ BEGIN
 				BEGIN
 					SET @l_GUID=NEWID();
 					INSERT INTO [Customer]
-						VALUES (@l_GUID,@referenceid,@typeid,@name,@gst,@landline,@contact,@mobile,@email,@address,@actionby,GETUTCDATE(),@isactive)
+						VALUES (@l_GUID,@typeid,@name,@gst,@landline,@email,@contact,@mobile,@address,@actionby,GETUTCDATE(),@isactive)
 				END
 			IF(@action='Update')
 	    		BEGIN
 					SET @l_GUID=@UId;
 					UPDATE [Customer] set
-					  ReferenceId=@referenceid,
 					  TypeId=@typeid,
 					  Name = @name,
 					  GST=@gst,
@@ -44,6 +42,7 @@ BEGIN
 					  Email=@email,
 					  Contact=@contact,
 					  Mobile=@mobile,
+					  Address=@address,
 					  Actionby=@actionby,
 					  ActionDate=GETUTCDATE(),
 					  Isactive=@isactive
@@ -65,7 +64,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerById]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerById]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -95,7 +94,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerGet]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerGet]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -137,7 +136,7 @@ BEGIN
         END + 
 		CASE 
             WHEN [key] = 'name' THEN 'C.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'type' THEN 'T.name = ''' + [value] + ''''
+            WHEN [key] = 'typeName' THEN 'T.name = ''' + [value] + ''''
 			ELSE [key] + ' = ''' + [value] + ''''
         END
         FROM OPENJSON(@l_Json)
@@ -156,7 +155,7 @@ END
 
 --select * from Customer;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilterJoin]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilterJoin]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -190,7 +189,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilterJsonConversion]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilterJsonConversion]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -227,7 +226,7 @@ BEGIN
 		select @output = @json;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Login]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Login]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -249,7 +248,7 @@ BEGIN
 		BEGIN
 		DECLARE @l_id bigint
 			select @l_id= id from [User] where (Email=@username or Mobile=@username) and Password=@password
-			update [User] set Password=@newpassword where (Email=@username or Mobile=@username) and Password=@password
+			update [User] set Password=@newpassword, isLogin=1 where (Email=@username or Mobile=@username) and Password=@password
 			select u.*,r.Name as RoleName from [User] U join [Role] R on U.RoleId=R.Id where u.id=@l_id
 		END		
 END
@@ -258,7 +257,7 @@ END
 
 --select *from [User] where [Email]='gopi@gmail.com' and [Password]='987654'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Role]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Role]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -312,7 +311,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleById]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleById]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -342,7 +341,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleGet]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleGet]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -393,7 +392,7 @@ END
 
 --EXEC sp_RoleGet 'Filter', 'id', 'ASC';
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleValidation]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleValidation]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -412,7 +411,7 @@ BEGIN
 		END		
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Supplier]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Supplier]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -421,7 +420,6 @@ CREATE PROCEDURE [dbo].[sp_Supplier]
 (
 @action nvarchar(50),
 @UId  uniqueidentifier=null,
-@referenceid bigint,
 @typeid bigint,
 @name nvarchar(100),
 @gst nvarchar(50),
@@ -442,21 +440,20 @@ BEGIN
 				BEGIN
 					SET @l_GUID=NEWID();
 					INSERT INTO [Supplier]
-						VALUES (@l_GUID,@referenceid,@typeid,@name,@gst,@landline,@contact,@mobile,@email,@address,@actionby,GETUTCDATE(),@isactive)
+						VALUES (@l_GUID,@typeid,@name,@gst,@landline,@email,@contact,@mobile,@address,@actionby,GETUTCDATE(),@isactive)
 				END
 			IF(@action='Update')
 	    		BEGIN
 					SET @l_GUID=@UId;
 					UPDATE [Supplier] set
-					  ReferenceId=@referenceid,
 					  TypeId=@typeid,
 					  Name = @name,
 					  GST=@gst,
 					  Landline=@landline,
 					  Email=@email,
-					  Address=@address,
 					  Contact=@contact,
 					  Mobile=@mobile,
+					  Address=@address,
 					  Actionby=@actionby,
 					  ActionDate=GETUTCDATE(),
 					  Isactive=@isactive
@@ -476,7 +473,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierById]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierById]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -506,7 +503,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierGet]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierGet]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -548,7 +545,7 @@ BEGIN
         END + 
 		CASE 
             WHEN [key] = 'name' THEN 'S.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'type' THEN 'T.name = ''' + [value] + ''''
+            WHEN [key] = 'typeName' THEN 'T.name = ''' + [value] + ''''
 			ELSE [key] + ' = ''' + [value] + ''''
         END
         FROM OPENJSON(@l_Json)
@@ -566,7 +563,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -624,7 +621,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -654,7 +651,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -716,7 +713,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserValidation]    Script Date: 30-04-2025 05:11:49 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserValidation]    Script Date: 30-04-2025 06:41:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
