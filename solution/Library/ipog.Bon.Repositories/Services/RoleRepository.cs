@@ -111,7 +111,7 @@ namespace ipog.Bon.Repositories.Services
             return await _connection.QueryFirstOrDefaultAsync<Role>("sp_RoleById", parameters, commandType: CommandType.StoredProcedure);
         }
 
-        public async Task<string> NameValidation(Guid? uid, string name)
+        public async Task<string?> NameValidation(Guid? uid, string name)
         {
             DynamicParameters parameters = new(
                 new

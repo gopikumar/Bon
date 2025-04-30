@@ -73,11 +73,15 @@ namespace ipog.Bon.Api
         {
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRoleService, RoleService>();
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ISupplierService, SupplierService>();
         }
         public static void ConfigureRepository(this IServiceCollection services)
         {
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<ISupplierRepository, SupplierRepository>();
         }
 
         public static void ConfigureMiddleware(this IServiceCollection services)
