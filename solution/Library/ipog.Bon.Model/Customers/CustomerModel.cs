@@ -17,6 +17,7 @@
     public class GetCustomerModel : CustomerModel
     {
         public Int64 Id { get; set; }
+        public string? TypeName { get; set; }
         public DateTime ActionDate { get; set; }
     }
 

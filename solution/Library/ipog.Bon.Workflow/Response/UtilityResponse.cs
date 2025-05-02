@@ -12,7 +12,7 @@ namespace ipog.Bon.Workflow.Response
                 Code = code,
                 Success = true,
                 Message = message,
-                Data = data
+                Record = data
             };
         }
         public static ResponseModel<T> ErrorResponse<T>(int code, string message)
@@ -31,7 +31,7 @@ namespace ipog.Bon.Workflow.Response
                 Code = code,
                 Success = true,
                 Message = message,
-                Data = data
+                Record = data
             };
         }
         public static ResponseByModel<T> ErrorResponseByModel<T>(int code, string message)
