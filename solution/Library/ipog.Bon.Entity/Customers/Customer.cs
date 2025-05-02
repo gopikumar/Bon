@@ -5,6 +5,7 @@
         public Int64 Id { get; set; }
         public Guid? UId { get; set; }
         public Int64 TypeId { get; set; }
+        public string? TypeName { get; set; }
         public string Name { get; set; } = string.Empty;
         public string GST { get; set; } = string.Empty;
         public string Landline { get; set; } = string.Empty;
