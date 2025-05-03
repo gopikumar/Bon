@@ -1,13 +1,13 @@
 USE [Bon]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessType]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessType]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [dbo].[sp_BusinessType]
 (
-@uid bigint,
+@UId  uniqueidentifier=null,
 @action nvarchar(50),
 @name nvarchar(100),
 @notes nvarchar(250),
@@ -51,7 +51,7 @@ BEGIN
 END	
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -81,7 +81,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -137,7 +137,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -157,7 +157,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Category]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Category]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -210,7 +210,7 @@ END
 --EXEC [sp_Category] 'Add',null,'Atlantica','Raw material supplier',1,1
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CategoryById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CategoryById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -240,7 +240,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CategoryGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CategoryGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -296,7 +296,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CategoryValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CategoryValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -314,7 +314,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Customer]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Customer]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -378,7 +378,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -408,7 +408,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -469,7 +469,7 @@ END
 
 --select * from Customer;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -496,7 +496,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Device]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Device]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -566,7 +566,7 @@ BEGIN
 	END CATCH
 END	
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -596,7 +596,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -656,7 +656,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenance]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenance]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -719,7 +719,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -749,7 +749,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -809,7 +809,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceType]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceType]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -857,7 +857,7 @@ BEGIN
 	END CATCH
 END	
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -887,7 +887,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -945,7 +945,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilterJoin]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilterJoin]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -979,7 +979,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilterJsonConversion]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilterJsonConversion]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1016,7 +1016,7 @@ BEGIN
 		select @output = @json;
 END;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCode]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCode]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1066,7 +1066,7 @@ BEGIN
 		IF @@TRANCOUNT > 0
 		BEGIN 
 			COMMIT TRANSACTION;
-			select H.*, C.name from HSNCode H join Category C on C.Id = H.CategoryId  where H.UId = @l_GUID;
+			select H.*, C.name as CategoryName from HSNCode H join Category C on C.Id = H.CategoryId  where H.UId = @l_GUID;
 		END
 	END TRY 
 	BEGIN CATCH
@@ -1078,7 +1078,7 @@ END
 
 --EXEC [sp_HSNCode] 'Add',null,1,'gopi','hghghhg','','','',1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCodeById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCodeById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1104,11 +1104,11 @@ BEGIN
 		IF(@action='IsActive')
 		BEGIN
 			Update [HSNCode] set isActive=@isActive  where uid=@uid
-			select H.*, C.name from HSNCode H join Category C on C.Id = H.CategoryId  where H.UId = @uid;
+			select H.*, C.name as CategoryName from HSNCode H join Category C on C.Id = H.CategoryId  where H.UId = @uid;
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCodeGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCodeGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1129,7 +1129,7 @@ BEGIN
 	IF(@action='All')
 	BEGIN 
 		SELECT count(*) as count from [HSNCode];
-		SET @l_SQL = N'select H.*, C.name from HSNCode H join Category C on C.Id = H.CategoryId ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy;
+		SET @l_SQL = N'select H.*, C.name as CategoryName from HSNCode H join Category C on C.Id = H.CategoryId ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy;
 		EXEC sp_executesql @l_SQL
 	END
 	
@@ -1153,7 +1153,7 @@ BEGIN
 		end
 	
 		SET @l_COUNT =N'select count(*) as count from [HSNCode] H join Category C on C.Id = H.CategoryId';
-		SET @l_SQL = N'select H.*, C.name from HSNCode H join Category C on C.Id = H.CategoryId';
+		SET @l_SQL = N'select H.*, C.name as CategoryName from HSNCode H join Category C on C.Id = H.CategoryId';
 		EXEC sp_GetFilterJoin @l_COUNT, @l_SQL, @orderBy, @sortBy, @pageNumber, @pageSize, @response;
 	END
 END	
@@ -1164,7 +1164,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCodeValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCodeValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1183,7 +1183,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Login]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Login]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1214,7 +1214,7 @@ END
 
 --select *from [User] where [Email]='gopi@gmail.com' and [Password]='987654'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Product]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Product]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1274,7 +1274,7 @@ END
 
 --EXEC [sp_Product] 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1304,7 +1304,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1366,7 +1366,7 @@ END
 
 --select * from Customer;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Reference]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Reference]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1431,7 +1431,7 @@ IF (@email NOT LIKE '%_@__%.__%')
     END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Role]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Role]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1485,7 +1485,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1515,7 +1515,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1566,7 +1566,7 @@ END
 
 --EXEC sp_RoleGet 'Filter', 'id', 'ASC';
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1585,7 +1585,7 @@ BEGIN
 		END		
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Supplier]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Supplier]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1647,7 +1647,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1677,7 +1677,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1737,7 +1737,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1764,7 +1764,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1823,7 +1823,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1856,7 +1856,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1918,7 +1918,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserValidation]    Script Date: 03-05-2025 07:46:44 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserValidation]    Script Date: 03-05-2025 08:13:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
