@@ -1,7 +1,7 @@
 ﻿using ipog.Bon.Entity;
-using ipog.Bon.Entity.Users;
+using ipog.Bon.Entity.Tables;
 using ipog.Bon.Model;
-using ipog.Bon.Model.Users;
+using ipog.Bon.Model.Tables;
 using ipog.Bon.Repositories.IServices;
 using ipog.Bon.Workflow.IService;
 using ipog.Bon.Workflow.Mapping;
@@ -52,7 +52,6 @@ namespace ipog.Bon.Workflow.Service
       
         public async Task<ResponseModel<GetUserModel>> Add(UserModel model)
         {
-            model.Password = "123456";
             if (await _userRepository.Add(await _mapper.CreateMap<User, UserModel>(model)) is User item)
             {
                 return UtilityResponse.SuccessResponse<GetUserModel>(200, "Insert successfully", await _mapper.CreateMap<GetUserModel, User>(item));

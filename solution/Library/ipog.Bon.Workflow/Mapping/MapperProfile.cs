@@ -1,15 +1,9 @@
 ﻿
 using AutoMapper;
 using ipog.Bon.Entity;
-using ipog.Bon.Entity.Customers;
-using ipog.Bon.Entity.Roles;
-using ipog.Bon.Entity.Suppliers;
-using ipog.Bon.Entity.Users;
+using ipog.Bon.Entity.Tables;
 using ipog.Bon.Model;
-using ipog.Bon.Model.Customers;
-using ipog.Bon.Model.Roles;
-using ipog.Bon.Model.Suppliers;
-using ipog.Bon.Model.Users;
+using ipog.Bon.Model.Tables;
 
 namespace ipog.Bon.Workflow.Mapping
 {
@@ -37,6 +31,18 @@ namespace ipog.Bon.Workflow.Mapping
             CreateMap<Supplier, SupplierModel>().ReverseMap();
             CreateMap<Supplier, GetSupplierModel>();
             CreateMap<Supplier, SupplierModelCollection>();
+
+            CreateMap<HSNCode, HSNCodeModel>().ReverseMap();
+            CreateMap<HSNCode, GetHSNCodeModel>();
+            CreateMap<HSNCode, HSNCodeModelCollection>();
+
+            CreateMap<Category, CategoryModel>().ReverseMap();
+            CreateMap<Category, GetCategoryModel>();
+            CreateMap<Category, CategoryModelCollection>();
+
+            CreateMap<BusinessType, BusinessTypeModel>().ReverseMap();
+            CreateMap<BusinessType, GetBusinessTypeModel>();
+            CreateMap<BusinessType, BusinessTypeModelCollection>();
         }
     }
 }

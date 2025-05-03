@@ -1,6 +1,6 @@
 ﻿using Dapper;
 using ipog.Bon.Entity;
-using ipog.Bon.Entity.Users;
+using ipog.Bon.Entity.Tables;
 using ipog.Bon.Repositories.IServices;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;

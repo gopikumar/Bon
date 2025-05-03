@@ -75,6 +75,9 @@ namespace ipog.Bon.Api
             services.AddTransient<IRoleService, RoleService>();
             services.AddTransient<ICustomerService, CustomerService>();
             services.AddTransient<ISupplierService, SupplierService>();
+            services.AddTransient<IHSNCodeService, HSNCodeService>();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IBusinessTypeService, BusinessTypeService>();
         }
         public static void ConfigureRepository(this IServiceCollection services)
         {
@@ -82,6 +85,9 @@ namespace ipog.Bon.Api
             services.AddTransient<IRoleRepository, RoleRepository>();
             services.AddTransient<ICustomerRepository, CustomerRepository>();
             services.AddTransient<ISupplierRepository, SupplierRepository>();
+            services.AddTransient<IHSNCodeRepository, HSNCodeRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<IBusinessTypeRepository, BusinessTypeRepository>();
         }
 
         public static void ConfigureMiddleware(this IServiceCollection services)

@@ -2,7 +2,7 @@
 
 namespace ipog.Bon.Repositories.IServices
 {
-    public interface ISupplierRepository : IGenericRepository<Supplier>
+    public interface IBusinessTypeRepository : IGenericRepository<BusinessType>
     {
     }
 }

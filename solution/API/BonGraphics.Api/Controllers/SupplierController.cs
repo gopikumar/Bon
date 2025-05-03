@@ -1,5 +1,5 @@
 ﻿using ipog.Bon.Model;
-using ipog.Bon.Model.Suppliers;
+using ipog.Bon.Model.Tables;
 using ipog.Bon.Workflow.IService;
 using Microsoft.AspNetCore.Mvc;
 

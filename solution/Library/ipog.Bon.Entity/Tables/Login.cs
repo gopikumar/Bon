@@ -1,4 +1,4 @@
-﻿namespace ipog.Bon.Entity.Users
+﻿namespace ipog.Bon.Entity.Tables
 {
     public class Login
     {

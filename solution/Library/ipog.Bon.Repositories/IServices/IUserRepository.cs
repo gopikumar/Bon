@@ -1,4 +1,4 @@
-﻿using ipog.Bon.Entity.Users;
+﻿using ipog.Bon.Entity.Tables;
 
 namespace ipog.Bon.Repositories.IServices
 {

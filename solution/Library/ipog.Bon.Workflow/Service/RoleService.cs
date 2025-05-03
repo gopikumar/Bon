@@ -1,7 +1,7 @@
 ﻿using ipog.Bon.Entity;
-using ipog.Bon.Entity.Roles;
+using ipog.Bon.Entity.Tables;
 using ipog.Bon.Model;
-using ipog.Bon.Model.Roles;
+using ipog.Bon.Model.Tables;
 using ipog.Bon.Repositories.IServices;
 using ipog.Bon.Workflow.IService;
 using ipog.Bon.Workflow.Mapping;

@@ -1,4 +1,4 @@
-﻿namespace ipog.Bon.Model.Roles
+﻿namespace ipog.Bon.Model.Tables
 {
     public class RoleModel
     {
@@ -6,12 +6,12 @@
         public string Name { get; set; } = string.Empty;
         public string Control { get; set; } = string.Empty;
         public string Notes { get; set; } = string.Empty;
-        public Int64 ActionBy { get; set; }
+        public long ActionBy { get; set; }
         public bool IsActive { get; set; }
     }
     public class GetRoleModel : RoleModel
     {
-        public Int64 Id { get; set; }
+        public long Id { get; set; }
         public DateTime ActionDate { get; set; }
     }
 

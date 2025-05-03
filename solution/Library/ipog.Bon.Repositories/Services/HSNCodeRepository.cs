@@ -9,17 +9,17 @@ using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
 {
-    public class CustomerRepository : ICustomerRepository
+    public class HSNCodeRepository : IHSNCodeRepository
     {
         private readonly IConfiguration _configuration;
         private readonly SqlConnection _connection;
-        public CustomerRepository(IConfiguration configuration)
+        public HSNCodeRepository(IConfiguration configuration)
         {
             _configuration = configuration;
             _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
        
-        public async Task<(int, IEnumerable<Customer>)> Get(Pagination pagination)
+        public async Task<(int, IEnumerable<HSNCode>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
                 new
@@ -28,22 +28,22 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_CustomerGet", parameters, commandType: CommandType.StoredProcedure))
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_HSNCodeGet", parameters, commandType: CommandType.StoredProcedure))
             {
-                return (response.ReadFirst<int>(), response.Read<Customer>());
+                return (response.ReadFirst<int>(), response.Read<HSNCode>());
             }
         }
       
-        public async Task<(int, IEnumerable<Customer>)> Get(FilterPagination pagination)
+        public async Task<(int, IEnumerable<HSNCode>)> Get(FilterPagination pagination)
         {
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_CustomerGet",
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_HSNCodeGet",
                 PaginationFilter.GetPaginationParameters(pagination), commandType: CommandType.StoredProcedure))
             {
-                return (response.ReadFirst<int>(), response.Read<Customer>());
+                return (response.ReadFirst<int>(), response.Read<HSNCode>());
             }
         }
       
-        public async Task<Customer?> Find(Guid uid)
+        public async Task<HSNCode?> Find(Guid uid)
         {
             DynamicParameters parameters = new(
                 new
@@ -51,48 +51,44 @@ namespace ipog.Bon.Repositories.Services
                     action = "Get",
                     uid
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
         }
       
-        public async Task<Customer?> Add(Customer model)
+        public async Task<HSNCode?> Add(HSNCode model)
         {
             DynamicParameters parameters = new(
                 new
                 {
                     action = "Add",
-                    typeId = model.TypeId,
+                    categoryId = model.CategoryId,
                     name = model.Name,
+                    notes = model.Notes,
                     gst = model.GST,
-                    landline = model.Landline,
-                    email = model.Email,
-                    contact = model.Contact,
-                    mobile = model.Mobile,
-                    address = model.Address,
+                    SGST = model.SGST,
+                    CGST = model.CGST,
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCode", parameters, commandType: CommandType.StoredProcedure);
         }
      
-        public async Task<Customer?> Update(Customer model)
+        public async Task<HSNCode?> Update(HSNCode model)
         {
             DynamicParameters parameters = new(
                 new
                 {
                     action = "Update",
                     uId = model.UId,
-                    typeId = model.TypeId,
+                    categoryId = model.CategoryId,
                     name = model.Name,
+                    notes = model.Notes,
                     gst = model.GST,
-                    landline = model.Landline,
-                    email = model.Email,
-                    contact = model.Contact,
-                    mobile = model.Mobile,
-                    address = model.Address,
+                    SGST = model.SGST,
+                    CGST = model.CGST,
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCode", parameters, commandType: CommandType.StoredProcedure);
         }
      
         public async Task<int> Delete(Guid uid)
@@ -103,10 +99,10 @@ namespace ipog.Bon.Repositories.Services
                     action = "Delete",
                     uid
                 });
-            return await _connection.ExecuteAsync("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.ExecuteAsync("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
         }
       
-        public async Task<Customer?> IsActive(Guid uid, bool isActive)
+        public async Task<HSNCode?> IsActive(Guid uid, bool isActive)
         {
             DynamicParameters parameters = new(
                 new
@@ -115,7 +111,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     isActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
         }
 
     }

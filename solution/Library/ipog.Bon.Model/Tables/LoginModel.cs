@@ -1,4 +1,4 @@
-﻿namespace ipog.Bon.Model.Users
+﻿namespace ipog.Bon.Model.Tables
 {
     public class LoginModel
     {

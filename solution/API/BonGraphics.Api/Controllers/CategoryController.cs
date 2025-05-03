@@ -1,17 +1,16 @@
 ﻿using ipog.Bon.Model;
 using ipog.Bon.Model.Tables;
 using ipog.Bon.Workflow.IService;
-using ipog.Bon.Workflow.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ipog.Bon.Api.Controllers
 {
-    public class RoleController : BaseController<RoleController>
+    public class CategoryController : BaseController<CategoryController>
     {
-        private readonly IRoleService _roleService;
-        public RoleController(IRoleService roleService, ILogger<RoleController> logger) : base(logger)
+        private readonly ICategoryService _categoryService;
+        public CategoryController(ICategoryService categoryService, ILogger<CategoryController> logger) : base(logger)
         {
-            _roleService = roleService;
+            _categoryService = categoryService;
         }
 
         [HttpPost("Filter")]
@@ -21,7 +20,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request");
             }
-            ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
+            ResponseModelCollection<CategoryModelCollection> response = await _categoryService.Get(pagination);
             return Ok(response);
         }
 
@@ -32,7 +31,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid request");
             }
-            ResponseModelCollection<RoleModelCollection> response = await _roleService.Get(pagination);
+            ResponseModelCollection<CategoryModelCollection> response = await _categoryService.Get(pagination);
             return Ok(response);
         }
 
@@ -43,34 +42,23 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid id");
             }
-            ResponseByModel<GetRoleModel> response = await _roleService.Find(id);
-            return Ok(response);
-        }
-
-        [HttpGet("Name")]
-        public async Task<IActionResult> NameValidation(Guid? uid, string name)
-        {
-            if (string.IsNullOrEmpty(name))
-            {
-                return BadRequest("Kindly pass the name");
-            }
-            ResponseModel response = await _roleService.NameValidation(uid, name);
+            ResponseByModel<GetCategoryModel> response = await _categoryService.Find(id);
             return Ok(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Insert(RoleModel model)
+        public async Task<IActionResult> Insert(CategoryModel model)
         {
             if (model == null)
             {
                 return BadRequest("Invalid request");
             }
-            ResponseModel<GetRoleModel> response = await _roleService.Add(model);
+            ResponseModel<GetCategoryModel> response = await _categoryService.Add(model);
             return Ok(response);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(RoleModel model)
+        public async Task<IActionResult> Update(CategoryModel model)
         {
             if (model == null)
             {
@@ -80,7 +68,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid uid");
             }
-            ResponseModel<GetRoleModel> response = await _roleService.Update(model!);
+            ResponseModel<GetCategoryModel> response = await _categoryService.Update(model!);
             return Ok(response);
         }
 
@@ -91,7 +79,7 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid id");
             }
-            ResponseModel response = await _roleService.Delete(id);
+            ResponseModel response = await _categoryService.Delete(id);
             return Ok(response);
         }
 
@@ -102,8 +90,9 @@ namespace ipog.Bon.Api.Controllers
             {
                 return BadRequest("Invalid id");
             }
-            ResponseByModel<GetRoleModel> response = await _roleService.IsActive(id, isActive);
+            ResponseByModel<GetCategoryModel> response = await _categoryService.IsActive(id, isActive);
             return Ok(response);
         }
+   
     }
 }

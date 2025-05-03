@@ -1,4 +1,4 @@
-﻿using ipog.Bon.Model.Suppliers;
+﻿using ipog.Bon.Model.Tables;
 
 namespace ipog.Bon.Workflow.IService
 {

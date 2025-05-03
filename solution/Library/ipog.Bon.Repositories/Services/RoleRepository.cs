@@ -1,13 +1,10 @@
-﻿using Azure.Core;
-using Dapper;
+﻿using Dapper;
 using ipog.Bon.Entity;
-using ipog.Bon.Entity.Roles;
-using ipog.Bon.Entity.Users;
+using ipog.Bon.Entity.Tables;
 using ipog.Bon.Repositories.IServices;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-using System.Reflection;
 using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services

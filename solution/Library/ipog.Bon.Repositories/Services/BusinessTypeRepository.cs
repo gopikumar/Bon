@@ -9,17 +9,17 @@ using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
 {
-    public class CustomerRepository : ICustomerRepository
+    public class BusinessTypeRepository : IBusinessTypeRepository
     {
         private readonly IConfiguration _configuration;
         private readonly SqlConnection _connection;
-        public CustomerRepository(IConfiguration configuration)
+        public BusinessTypeRepository(IConfiguration configuration)
         {
             _configuration = configuration;
             _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
        
-        public async Task<(int, IEnumerable<Customer>)> Get(Pagination pagination)
+        public async Task<(int, IEnumerable<BusinessType>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
                 new
@@ -28,22 +28,22 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_CustomerGet", parameters, commandType: CommandType.StoredProcedure))
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_BusinessTypeGet", parameters, commandType: CommandType.StoredProcedure))
             {
-                return (response.ReadFirst<int>(), response.Read<Customer>());
+                return (response.ReadFirst<int>(), response.Read<BusinessType>());
             }
         }
       
-        public async Task<(int, IEnumerable<Customer>)> Get(FilterPagination pagination)
+        public async Task<(int, IEnumerable<BusinessType>)> Get(FilterPagination pagination)
         {
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_CustomerGet",
+            using (GridReader response = await _connection.QueryMultipleAsync("sp_BusinessTypeGet",
                 PaginationFilter.GetPaginationParameters(pagination), commandType: CommandType.StoredProcedure))
             {
-                return (response.ReadFirst<int>(), response.Read<Customer>());
+                return (response.ReadFirst<int>(), response.Read<BusinessType>());
             }
         }
       
-        public async Task<Customer?> Find(Guid uid)
+        public async Task<BusinessType?> Find(Guid uid)
         {
             DynamicParameters parameters = new(
                 new
@@ -51,48 +51,36 @@ namespace ipog.Bon.Repositories.Services
                     action = "Get",
                     uid
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<BusinessType>("sp_BusinessTypeById", parameters, commandType: CommandType.StoredProcedure);
         }
       
-        public async Task<Customer?> Add(Customer model)
+        public async Task<BusinessType?> Add(BusinessType model)
         {
             DynamicParameters parameters = new(
                 new
                 {
                     action = "Add",
-                    typeId = model.TypeId,
                     name = model.Name,
-                    gst = model.GST,
-                    landline = model.Landline,
-                    email = model.Email,
-                    contact = model.Contact,
-                    mobile = model.Mobile,
-                    address = model.Address,
+                    notes = model.Notes,
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<BusinessType>("sp_BusinessType", parameters, commandType: CommandType.StoredProcedure);
         }
      
-        public async Task<Customer?> Update(Customer model)
+        public async Task<BusinessType?> Update(BusinessType model)
         {
             DynamicParameters parameters = new(
                 new
                 {
                     action = "Update",
                     uId = model.UId,
-                    typeId = model.TypeId,
                     name = model.Name,
-                    gst = model.GST,
-                    landline = model.Landline,
-                    email = model.Email,
-                    contact = model.Contact,
-                    mobile = model.Mobile,
-                    address = model.Address,
+                    notes = model.Notes,
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<BusinessType>("sp_BusinessType", parameters, commandType: CommandType.StoredProcedure);
         }
      
         public async Task<int> Delete(Guid uid)
@@ -103,10 +91,10 @@ namespace ipog.Bon.Repositories.Services
                     action = "Delete",
                     uid
                 });
-            return await _connection.ExecuteAsync("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.ExecuteAsync("sp_BusinessTypeById", parameters, commandType: CommandType.StoredProcedure);
         }
       
-        public async Task<Customer?> IsActive(Guid uid, bool isActive)
+        public async Task<BusinessType?> IsActive(Guid uid, bool isActive)
         {
             DynamicParameters parameters = new(
                 new
@@ -115,7 +103,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     isActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await _connection.QueryFirstOrDefaultAsync<BusinessType>("sp_BusinessTypeById", parameters, commandType: CommandType.StoredProcedure);
         }
 
     }
