@@ -12,11 +12,11 @@ namespace ipog.Bon.Repositories
             {
                 foreach (var item in pagination.FilterColumns)
                 {
-                    filters += $"{item.Key} = '{item.Value}' AND ";
+                    filters += $"'{item.Key}':'{item.Value}' AND ";
                 }
                 if (filters.Length > 0)
                 {
-                    filters = filters.Substring(0, filters.Length - 4); // Remove last "AND "
+                    filters = filters.Substring(0, filters.Length - 5); // Remove last "AND "
                 }
             }
             return new(
