@@ -1,6 +1,6 @@
 USE [Bon]
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessType]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessType]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -51,7 +51,7 @@ BEGIN
 END	
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -81,7 +81,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -115,13 +115,15 @@ BEGIN
 		if(@filterColumns > '' )
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
-
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + [key] + ' = ''' + [value] + ''''
-        FROM OPENJSON(@l_Json)
+					
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'isActive' THEN 'isActive = ''' + [value] + ''''
+		       ELSE [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	
@@ -137,7 +139,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_BusinessTypeValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -157,7 +159,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Category]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Category]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -210,7 +212,7 @@ END
 --EXEC [sp_Category] 'Add',null,'Atlantica','Raw material supplier',1,1
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CategoryById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CategoryById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -240,7 +242,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CategoryGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CategoryGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -275,12 +277,14 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + [key] + ' = ''' + [value] + ''''
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'isActive' THEN 'isActive = ''' + [value] + ''''
+		       ELSE [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	
@@ -296,7 +300,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CategoryValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CategoryValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -314,7 +318,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Customer]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Customer]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -378,7 +382,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -408,7 +412,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -443,33 +447,27 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + 
-		CASE 
-            WHEN [key] = 'name' THEN 'C.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'typeName' THEN 'T.name = ''' + [value] + ''''
-			ELSE [key] + ' = ''' + [value] + ''''
-        END
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'typeName' THEN 'T.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'C.isActive = ''' + [value] + ''''
+		       ELSE 'C.' +  [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	    SET @l_COUNT =N'select count(*) as count from [Customer] C join [BusinessType] T on T.Id=C.TypeId';
 		SET @l_SQL = N'Select C.*,T.Name as TypeName from [Customer] C join [BusinessType] T on T.Id=C.TypeId';
+		--select @l_SQL + @response
 		EXEC sp_GetFilterJoin @l_COUNT, @l_SQL, @orderBy, @sortBy, @pageNumber, @pageSize, @response;
 	END
 END	
 
---exec sp_CustomerGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns='name=''gopi'' ' 
---exec sp_CustomerGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=''
---exec sp_CustomerGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=null
-
-
---select * from Customer;
+--exec sp_CustomerGet @action=N'Filter',@orderBy=N'id',@sortBy=N'desc',@pageNumber=1,@pageSize=10,@filterColumns=N'''isActive'':''true'''
 GO
-/****** Object:  StoredProcedure [dbo].[sp_CustomerValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_CustomerValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -496,7 +494,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Device]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Device]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -566,7 +564,7 @@ BEGIN
 	END CATCH
 END	
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -596,7 +594,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -631,17 +629,15 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + 
-		CASE 
-            WHEN [key] = 'name' THEN 'D.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'DeviceName' THEN 'DT.name = ''' + [value] + ''''
-			ELSE [key] + ' = ''' + [value] + ''''
-        END
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'deviceName' THEN 'DT.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'D.isActive = ''' + [value] + ''''
+		       ELSE 'D.' + [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	    SET @l_COUNT =N'select count(*) as count from [Device] D join [DeviceType] DT on DT.Id=D.MachineTypeId';
@@ -656,7 +652,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenance]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenance]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -719,7 +715,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -749,7 +745,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceMaintenanceGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -784,17 +780,15 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + 
-		CASE 
-           
-            WHEN [key] = 'DeviceName' THEN 'DT.name = ''' + [value] + ''''
-			ELSE [key] + ' = ''' + [value] + ''''
-        END
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'deviceName' THEN 'D.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'DM.isActive = ''' + [value] + ''''
+		       ELSE 'DM.' + [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	    SET @l_COUNT =N'select count(*) as count from [DeviceMaintenance] DM join [Device] D on DM.DeviceId=D.Id where DM.UId=@uid';
@@ -809,7 +803,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceType]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceType]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -857,7 +851,7 @@ BEGIN
 	END CATCH
 END	
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -887,7 +881,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_DeviceTypeGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -922,12 +916,14 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + [key] + ' = ''' + [value] + ''''
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'isActive' THEN 'isActive = ''' + [value] + ''''
+		       ELSE [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	
@@ -945,7 +941,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilterJoin]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilterJoin]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -976,47 +972,44 @@ BEGIN
 	EXEC sp_executesql @l_Count;
 	EXEC sp_executesql @l_Sql, N'@pageNumber INT, @pageSize INT', @pageNumber, @pageSize;
 END
-
-
 GO
-/****** Object:  StoredProcedure [dbo].[sp_GetFilterJsonConversion]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_GetFilterJsonConversion]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-create  PROCEDURE [dbo].[sp_GetFilterJsonConversion]
+CREATE PROCEDURE [dbo].[sp_GetFilterJsonConversion]
     @filterColumns NVARCHAR(MAX),
-	@output  NVARCHAR(MAX) OUT
+    @output NVARCHAR(MAX) OUT
 AS
 BEGIN
-		DECLARE @json NVARCHAR(MAX) = N'{';
-		
-		-- Split the string into key-value pairs
-		DECLARE @pair NVARCHAR(MAX), @key NVARCHAR(MAX), @value NVARCHAR(MAX);
-		DECLARE cur CURSOR FOR
-		SELECT value
-		FROM STRING_SPLIT(@filterColumns, ',');
-		
-		OPEN cur;
-		FETCH NEXT FROM cur INTO @pair;
-		
-		WHILE @@FETCH_STATUS = 0
-		BEGIN
-		    SET @key = TRIM(SUBSTRING(@pair, 1, CHARINDEX('=', @pair) - 1));
-		    SET @value = TRIM(SUBSTRING(@pair, CHARINDEX('=', @pair) + 1, LEN(@pair)));		
-		    -- Construct the JSON key-value pair (handle single quotes and spaces)
-		    SET @json = @json + N'"' + @key + N'": "' + REPLACE(@value, '''', '') + '",';		
-		    FETCH NEXT FROM cur INTO @pair;
-		END;
-		
-		CLOSE cur;
-		DEALLOCATE cur;		
-		-- Remove the trailing comma and close the JSON object
-		SET @json = LEFT(@json, LEN(@json) - 1) + N'}';		
-		select @output = @json;
+   -- Step 1: Replace doubled single quotes with regular single quotes
+SET @filterColumns = REPLACE(@filterColumns, '''''', '''');
+
+-- Now it's: 'id' : '10' AND 'name' : 'Non-Regular'
+
+-- Step 2: Remove single quotes around keys and values
+SET @filterColumns = REPLACE(@filterColumns, '''', '');
+
+-- Step 3: Replace " AND " with commas
+SET @filterColumns = REPLACE(@filterColumns, ' AND ', ',');
+
+-- Step 4: Add braces and double quotes to make valid JSON
+-- First, replace `:` with `":"`, and wrap keys in quotes
+-- We'll use simple pattern conversion
+SET @filterColumns = REPLACE(@filterColumns, ':', '":"');
+
+SET @filterColumns = '"' + REPLACE(@filterColumns, ',', '","') + '"';
+
+SET @filterColumns = '{' + @filterColumns + '}';
+
+-- Final JSON Output
+SET @output = @filterColumns;
 END;
+
+
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCode]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCode]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1078,7 +1071,7 @@ END
 
 --EXEC [sp_HSNCode] 'Add',null,1,'gopi','hghghhg','','','',1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCodeById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCodeById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1093,7 +1086,7 @@ AS
 BEGIN
 		IF(@action='Get')
 		BEGIN
-			select * from [HSNCode] where uid=@uid
+			select H.*, C.name as CategoryName from HSNCode H join Category C on C.Id = H.CategoryId where h.uid=@uid
 		END
 		
 		IF(@action='Delete')
@@ -1108,7 +1101,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCodeGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCodeGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1143,12 +1136,15 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + [key] + ' = ''' + [value] + ''''
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'categoryName' THEN 'C.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'H.isActive = ''' + [value] + ''''
+		       ELSE 'H.' + [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	
@@ -1164,7 +1160,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_HSNCodeValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_HSNCodeValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1183,7 +1179,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Login]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Login]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1214,7 +1210,159 @@ END
 
 --select *from [User] where [Email]='gopi@gmail.com' and [Password]='987654'
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Product]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Menu]    Script Date: 08-05-2025 07:29:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_Menu]
+(
+@action nvarchar(50),
+@id bigint,
+@userId bigint=null,
+@roleId bigint=null,
+@dashboard nvarchar(100)=null,
+@customer nvarchar(100)=null,
+@supplier nvarchar(100)=null,
+@user nvarchar(100)=null,
+@role nvarchar(100)=null,
+@hsncode nvarchar(100)=null,
+@category nvarchar(100)=null,
+@businessType nvarchar(100)=null,
+@menu nvarchar(100)=null,
+@theme nvarchar(100)=null,
+@language nvarchar(100)=null
+)
+AS
+BEGIN	
+	 BEGIN TRY 
+	    BEGIN TRANSACTION
+			IF(@action='Add')
+				BEGIN
+					INSERT INTO [Menu]
+						VALUES (@userId,@roleId,@dashboard,@customer,@supplier,@user,@role,@hsncode,@category,@businessType,@menu,@theme,@language)
+				END
+			IF(@action='Update')
+	    		BEGIN
+					UPDATE [Menu] set	
+					  userId = @userId,
+					  roleId=@roleId,
+					  dashboard=@dashboard,
+					  customer=@customer,
+					  supplier=@supplier,
+					  [user]=@user,
+					  [role]=@role,
+					  hsncode=@hsncode,
+					  category=@category,
+					  businessType=@businessType,
+					  menu=@menu,
+					  theme=@theme,
+					  [language]=@language
+					  where id = @id;					  
+				END
+  
+		IF @@TRANCOUNT > 0
+		BEGIN 
+			COMMIT TRANSACTION;
+			select M.*,r.Name as RoleName from [Menu] M join [Role] R on M.RoleId=R.Id where m.id=@id
+		END
+	END TRY 
+	BEGIN CATCH
+		BEGIN 
+			ROLLBACK TRANSACTION;
+		END  
+	END CATCH
+END	
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_MenuById]    Script Date: 08-05-2025 07:29:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_MenuById]
+(
+@action nvarchar(50),
+@id bigint
+)
+AS
+BEGIN
+		IF(@action='Get')
+		BEGIN
+			select m.*,r.Name as RoleName from [Menu] M join [Role] R on M.RoleId=R.Id where m.id=@id
+		END
+		
+		IF(@action='Delete')
+		    BEGIN
+			 DELETE from [Menu] WHERE id = @id;
+        END
+		
+END
+
+
+GO
+/****** Object:  StoredProcedure [dbo].[sp_MenuGet]    Script Date: 08-05-2025 07:29:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [dbo].[sp_MenuGet]
+(
+@action NVARCHAR(50),
+@orderBy NVARCHAR(100),
+@sortBy NVARCHAR(4),
+@pageNumber INT=1,
+@pageSize INT=10,
+@filterColumns NVARCHAR(MAX) =''
+)
+AS
+BEGIN
+
+	DECLARE @l_SQL NVARCHAR(MAX);
+	IF(@action='All')
+	BEGIN 
+		SELECT count(*) as count from [User];
+		SET @l_SQL = N'select M.*,r.Name as RoleName from [Menu] M join [Role] R on M.RoleId=R.Id ORDER BY ' + QUOTENAME(@orderBy) + ' ' + @sortBy;
+		EXEC sp_executesql @l_SQL
+	END
+	
+	IF(@action='Filter')
+	BEGIN
+		DECLARE @l_COUNT NVARCHAR(MAX);
+		DECLARE @l_Json NVARCHAR(MAX);
+	    DECLARE @response NVARCHAR(MAX)='';
+
+		if(@filterColumns > '' )
+		begin
+		 EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
+		 
+		 SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'roleName' THEN 'R.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'M.isActive = ''' + [value] + ''''
+		       ELSE 'M.' + [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
+		set @response=' where '+@response
+		end
+		SET @l_COUNT =N'select count(*) as count from [Menu] M join [Role] R on M.RoleId=R.Id';
+		SET @l_SQL = N'select m.*,r.Name as RoleName from [Menu] M join [Role] R on M.RoleId=R.Id';
+	
+		EXEC sp_GetFilterJoin @l_COUNT, @l_SQL, @orderBy, @sortBy, @pageNumber, @pageSize, @response;
+	END
+END	
+
+--exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns='name=Gopi,email=gopi@gmail.com,isActive=1,roleName=Admin'
+--exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=''
+--exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=null
+
+--exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=N'''name'':''g'''
+
+ 
+GO
+/****** Object:  StoredProcedure [dbo].[sp_Product]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1274,7 +1422,7 @@ END
 
 --EXEC [sp_Product] 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1304,7 +1452,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_ProductGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_ProductGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1338,19 +1486,15 @@ BEGIN
 		if(@filterColumns > '' )
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
-
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + 
-		CASE 
-            
-			WHEN [key] = 'name' THEN 'P.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'categoryName' THEN 'C.name = ''' + [value] + ''''
-			ELSE [key] + ' = ''' + [value] + ''''
-        END
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'categoryName' THEN 'C.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'P.isActive = ''' + [value] + ''''
+		       ELSE 'P.' + [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	    SET @l_COUNT =N'select count(*) as count from [Product] P join [Category] C on C.Id=P.CategoryId where P.UId=@uid';
@@ -1366,7 +1510,7 @@ END
 
 --select * from Customer;
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Reference]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Reference]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1431,7 +1575,7 @@ IF (@email NOT LIKE '%_@__%.__%')
     END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Role]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Role]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1485,7 +1629,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1515,7 +1659,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1549,12 +1693,14 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + [key] + ' = ''' + [value] + ''''
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'isActive' THEN 'isActive = ''' + [value] + ''''
+		       ELSE [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 
@@ -1566,7 +1712,7 @@ END
 
 --EXEC sp_RoleGet 'Filter', 'id', 'ASC';
 GO
-/****** Object:  StoredProcedure [dbo].[sp_RoleValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_RoleValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1585,7 +1731,7 @@ BEGIN
 		END		
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_Supplier]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_Supplier]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1647,7 +1793,7 @@ BEGIN
 	END CATCH
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1677,7 +1823,7 @@ BEGIN
 		END
 END
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1712,17 +1858,15 @@ BEGIN
 		begin
 			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
 
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + 
-		CASE 
-            WHEN [key] = 'name' THEN 'S.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'typeName' THEN 'T.name = ''' + [value] + ''''
-			ELSE [key] + ' = ''' + [value] + ''''
-        END
-        FROM OPENJSON(@l_Json)
+		SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'typeName' THEN 'T.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'S.isActive = ''' + [value] + ''''
+		       ELSE 'S.' +  [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
 	    SET @l_COUNT =N'select count(*) as count from [Supplier] S join [BusinessType] T on T.Id=S.TypeId';
@@ -1737,7 +1881,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_SupplierValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_SupplierValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1764,7 +1908,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_User]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1823,7 +1967,7 @@ END
 
 --EXEC sp_User 'Add',null,'gopi',null,'123456','gopi@gmail.com','9876543211',1,1,1
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserById]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1856,7 +2000,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserGet]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1889,36 +2033,35 @@ BEGIN
 
 		if(@filterColumns > '' )
 		begin
-			EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
-
-		SELECT @response=
-		CASE 
-            WHEN LEN(@response) > 0 THEN @response + ' AND '
-            ELSE ''
-        END + 
-		CASE 
-            WHEN [key] = 'id' THEN 'U.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'name' THEN 'U.' + [key] + ' = ''' + [value] + ''''
-            WHEN [key] = 'roleName' THEN 'R.name = ''' + [value] + ''''
-            ELSE [key] + ' = ''' + [value] + ''''
-        END
-        FROM OPENJSON(@l_Json)
+		 EXEC sp_GetFilterJsonConversion @filterColumns,@l_Json OUTPUT;
+		 
+		 SELECT @response = STRING_AGG(
+		   CASE 
+		       WHEN [key] = 'roleName' THEN 'R.name like ''%' + [value] + '%'''
+		       WHEN [key] = 'isActive' THEN 'U.isActive = ''' + [value] + ''''
+		       ELSE 'U.' + [key] + ' like ''%' + [value] + '%'''
+		   END,
+		   ' AND '
+		 )
+		FROM OPENJSON(@l_Json)
 		set @response=' where '+@response
 		end
-	
 		SET @l_COUNT =N'select count(*) as count from [User] U join [Role] R on U.RoleId=R.Id';
 		SET @l_SQL = N'select u.*,r.Name as RoleName from [User] U join [Role] R on U.RoleId=R.Id';
+	
 		EXEC sp_GetFilterJoin @l_COUNT, @l_SQL, @orderBy, @sortBy, @pageNumber, @pageSize, @response;
 	END
 END	
 
---exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns='name=''gopi'' '
+--exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns='name=Gopi,email=gopi@gmail.com,isActive=1,roleName=Admin'
 --exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=''
 --exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=null
 
+--exec sp_UserGet @action=N'Filter',@orderBy=N'id',@sortBy=N'asc',@pageNumber=1,@pageSize=10,@filterColumns=N'''name'':''g'''
 
+ 
 GO
-/****** Object:  StoredProcedure [dbo].[sp_UserValidation]    Script Date: 03-05-2025 10:33:59 ******/
+/****** Object:  StoredProcedure [dbo].[sp_UserValidation]    Script Date: 08-05-2025 07:29:45 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
