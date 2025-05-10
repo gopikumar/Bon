@@ -106,5 +106,15 @@ namespace ipog.Bon.Repositories.Services
             return await _connection.QueryFirstOrDefaultAsync<BusinessType>("sp_BusinessTypeById", parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<string?> NameValidation(Guid? uid, string name)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    uid,
+                    name
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_BusinessTypeValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
     }
 }

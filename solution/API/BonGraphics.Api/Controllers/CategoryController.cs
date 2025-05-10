@@ -1,6 +1,7 @@
 ﻿using ipog.Bon.Model;
 using ipog.Bon.Model.Tables;
 using ipog.Bon.Workflow.IService;
+using ipog.Bon.Workflow.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ipog.Bon.Api.Controllers
@@ -43,6 +44,17 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid id");
             }
             ResponseByModel<GetCategoryModel> response = await _categoryService.Find(id);
+            return Ok(response);
+        }
+
+        [HttpGet("Name")]
+        public async Task<IActionResult> NameValidation(Guid? uid, string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Kindly pass the name");
+            }
+            ResponseModel response = await _categoryService.NameValidation(uid, name);
             return Ok(response);
         }
 

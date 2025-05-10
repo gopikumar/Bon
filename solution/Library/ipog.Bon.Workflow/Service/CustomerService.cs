@@ -3,6 +3,7 @@ using ipog.Bon.Entity.Tables;
 using ipog.Bon.Model;
 using ipog.Bon.Model.Tables;
 using ipog.Bon.Repositories.IServices;
+using ipog.Bon.Repositories.Services;
 using ipog.Bon.Workflow.IService;
 using ipog.Bon.Workflow.Mapping;
 using ipog.Bon.Workflow.Response;
@@ -18,7 +19,7 @@ namespace ipog.Bon.Workflow.Service
             _customerRepository = customerRepository;
             _mapper = mapper;
         }
-      
+
         public async Task<ResponseModelCollection<CustomerModelCollection>> Get(PaginationModel pagination)
         {
             var (count, items) = await _customerRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination));
@@ -29,7 +30,7 @@ namespace ipog.Bon.Workflow.Service
             CustomerModelCollection collection = await _mapper.CreateMap<CustomerModelCollection, List<Customer>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<CustomerModelCollection>(200, "Get successfully", count, collection);
         }
-       
+
         public async Task<ResponseModelCollection<CustomerModelCollection>> Get(FilterPaginationModel pagination)
         {
             var (count, items) = await _customerRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination));
@@ -40,7 +41,7 @@ namespace ipog.Bon.Workflow.Service
             CustomerModelCollection collection = await _mapper.CreateMap<CustomerModelCollection, List<Customer>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<CustomerModelCollection>(200, "Get successfully", count, collection);
         }
-     
+
         public async Task<ResponseByModel<GetCustomerModel>> Find(Guid uid)
         {
             if (await _customerRepository.Find(uid) is Customer item)
@@ -49,7 +50,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponseByModel<GetCustomerModel>(404, "Data not found");
         }
-      
+
         public async Task<ResponseModel<GetCustomerModel>> Add(CustomerModel model)
         {
             if (await _customerRepository.Add(await _mapper.CreateMap<Customer, CustomerModel>(model)) is Customer item)
@@ -58,7 +59,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponse<GetCustomerModel>(404, "Insert failed");
         }
-       
+
         public async Task<ResponseModel<GetCustomerModel>> Update(CustomerModel model)
         {
             if (await _customerRepository.Update(await _mapper.CreateMap<Customer, CustomerModel>(model)) is Customer item)
@@ -67,7 +68,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponse<GetCustomerModel>(404, "Update failed");
         }
-       
+
         public async Task<ResponseModel> Delete(Guid uid)
         {
             int isDelete = await _customerRepository.Delete(uid);
@@ -77,7 +78,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.SuccessResponse(204, "Deleted successfully");
         }
-       
+
         public async Task<ResponseByModel<GetCustomerModel>> IsActive(Guid uid, bool isActive)
         {
             if (await _customerRepository.IsActive(uid, isActive) is Customer item)
@@ -85,6 +86,23 @@ namespace ipog.Bon.Workflow.Service
                 return UtilityResponse.SuccessResponseByModel<GetCustomerModel>(200, "Active status updated successfully", await _mapper.CreateMap<GetCustomerModel, Customer>(item));
             }
             return UtilityResponse.ErrorResponseByModel<GetCustomerModel>(404, "Data not found");
+        }
+        public async Task<ResponseModel> EmailValidation(Guid? uid, string email)
+        {
+            if (await _customerRepository.EmailValidation(uid, email) is string response)
+            {
+                return UtilityResponse.SuccessResponse(204, "Email already exists");
+            }
+            return UtilityResponse.SuccessResponse(204, "");
+        }
+
+        public async Task<ResponseModel> MobileValidation(Guid? uid, string mobile)
+        {
+            if (await _customerRepository.MobileValidation(uid, mobile) is string response)
+            {
+                return UtilityResponse.SuccessResponse(204, "Mobile already exists");
+            }
+            return UtilityResponse.SuccessResponse(204, "");
         }
 
     }

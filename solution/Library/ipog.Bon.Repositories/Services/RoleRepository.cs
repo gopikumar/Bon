@@ -113,7 +113,6 @@ namespace ipog.Bon.Repositories.Services
             DynamicParameters parameters = new(
                 new
                 {
-                    action = "Name",
                     uid,
                     name
                 });

@@ -1,6 +1,7 @@
 ﻿using ipog.Bon.Model;
 using ipog.Bon.Model.Tables;
 using ipog.Bon.Workflow.IService;
+using ipog.Bon.Workflow.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ipog.Bon.Api.Controllers
@@ -43,6 +44,28 @@ namespace ipog.Bon.Api.Controllers
                 return BadRequest("Invalid id");
             }
             ResponseByModel<GetCustomerModel> response = await _customerService.Find(id);
+            return Ok(response);
+        }
+
+        [HttpGet("Email")]
+        public async Task<IActionResult> EmailValidation(Guid? uid, string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Kindly pass the email");
+            }
+            ResponseModel response = await _customerService.EmailValidation(uid, email);
+            return Ok(response);
+        }
+
+        [HttpGet("Mobile")]
+        public async Task<IActionResult> MobileValidation(Guid? uid, string mobile)
+        {
+            if (string.IsNullOrEmpty(mobile))
+            {
+                return BadRequest("Kindly pass the mobile");
+            }
+            ResponseModel response = await _customerService.MobileValidation(uid, mobile);
             return Ok(response);
         }
 

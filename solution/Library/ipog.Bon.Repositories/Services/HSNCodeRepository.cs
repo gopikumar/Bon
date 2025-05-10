@@ -114,5 +114,17 @@ namespace ipog.Bon.Repositories.Services
             return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<string?> NameValidation(Guid? uid, string name, long categoryId)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    uid,
+                    name,
+                    categoryId
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_HSNCodeValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
+
     }
 }

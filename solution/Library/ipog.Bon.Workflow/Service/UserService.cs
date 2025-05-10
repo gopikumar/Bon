@@ -18,7 +18,7 @@ namespace ipog.Bon.Workflow.Service
             _userRepository = userRepository;
             _mapper = mapper;
         }
-      
+
         public async Task<ResponseModelCollection<UserModelCollection>> Get(PaginationModel pagination)
         {
             var (count, items) = await _userRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination));
@@ -29,7 +29,7 @@ namespace ipog.Bon.Workflow.Service
             UserModelCollection collection = await _mapper.CreateMap<UserModelCollection, List<User>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<UserModelCollection>(200, "Get successfully", count, collection);
         }
-       
+
         public async Task<ResponseModelCollection<UserModelCollection>> Get(FilterPaginationModel pagination)
         {
             var (count, items) = await _userRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination));
@@ -40,7 +40,7 @@ namespace ipog.Bon.Workflow.Service
             UserModelCollection collection = await _mapper.CreateMap<UserModelCollection, List<User>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<UserModelCollection>(200, "Get successfully", count, collection);
         }
-     
+
         public async Task<ResponseByModel<GetUserModel>> Find(Guid uid)
         {
             if (await _userRepository.Find(uid) is User item)
@@ -49,7 +49,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponseByModel<GetUserModel>(404, "Data not found");
         }
-      
+
         public async Task<ResponseModel<GetUserModel>> Add(UserModel model)
         {
             if (await _userRepository.Add(await _mapper.CreateMap<User, UserModel>(model)) is User item)
@@ -58,7 +58,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponse<GetUserModel>(404, "Insert failed");
         }
-       
+
         public async Task<ResponseModel<GetUserModel>> Update(UserModel model)
         {
             if (await _userRepository.Update(await _mapper.CreateMap<User, UserModel>(model)) is User item)
@@ -67,7 +67,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.ErrorResponse<GetUserModel>(404, "Update failed");
         }
-       
+
         public async Task<ResponseModel> Delete(Guid uid)
         {
             int isDelete = await _userRepository.Delete(uid);
@@ -77,7 +77,7 @@ namespace ipog.Bon.Workflow.Service
             }
             return UtilityResponse.SuccessResponse(204, "Deleted successfully");
         }
-       
+
         public async Task<ResponseByModel<GetUserModel>> IsActive(Guid uid, bool isActive)
         {
             if (await _userRepository.IsActive(uid, isActive) is User item)
@@ -89,7 +89,7 @@ namespace ipog.Bon.Workflow.Service
 
         public async Task<ResponseModel> EmailValidation(Guid? uid, string email)
         {
-            if (await _userRepository.EmailValidation(uid,email) is string response)
+            if (await _userRepository.EmailValidation(uid, email) is string response)
             {
                 return UtilityResponse.SuccessResponse(204, "Email already exists");
             }

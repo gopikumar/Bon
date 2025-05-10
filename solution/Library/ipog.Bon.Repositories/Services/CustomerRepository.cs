@@ -118,5 +118,28 @@ namespace ipog.Bon.Repositories.Services
             return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
         }
 
+        public async Task<string?> EmailValidation(Guid? uid, string email)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Email",
+                    uid,
+                    email
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_CustomerValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
+
+        public async Task<string?> MobileValidation(Guid? uid, string mobile)
+        {
+            DynamicParameters parameters = new(
+                new
+                {
+                    action = "Mobile",
+                    uid,
+                    mobile
+                });
+            return await _connection.QueryFirstOrDefaultAsync<string>("sp_CustomerValidation", parameters, commandType: CommandType.StoredProcedure);
+        }
     }
 }
