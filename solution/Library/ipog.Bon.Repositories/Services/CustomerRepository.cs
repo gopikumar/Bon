@@ -2,23 +2,16 @@
 using ipog.Bon.Entity;
 using ipog.Bon.Entity.Tables;
 using ipog.Bon.Repositories.IServices;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Data;
-using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
 {
-    public class CustomerRepository : ICustomerRepository
+    public class CustomerRepository : BaseRepository, ICustomerRepository
     {
-        private readonly IConfiguration _configuration;
-        private readonly SqlConnection _connection;
-        public CustomerRepository(IConfiguration configuration)
+        public CustomerRepository(IConfiguration configuration) : base(configuration)
         {
-            _configuration = configuration;
-            _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
-       
+
         public async Task<(int, IEnumerable<Customer>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
@@ -28,19 +21,12 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_CustomerGet", parameters, commandType: CommandType.StoredProcedure))
-            {
-                return (response.ReadFirst<int>(), response.Read<Customer>());
-            }
+            return await base.QueryMultipleAsync<Customer>("sp_CustomerGet", parameters);
         }
       
         public async Task<(int, IEnumerable<Customer>)> Get(FilterPagination pagination)
         {
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_CustomerGet",
-                PaginationFilter.GetPaginationParameters(pagination), commandType: CommandType.StoredProcedure))
-            {
-                return (response.ReadFirst<int>(), response.Read<Customer>());
-            }
+            return await base.QueryMultipleAsync<Customer>("sp_CustomerGet", PaginationFilter.GetFilterPagination(pagination));
         }
       
         public async Task<Customer?> Find(Guid uid)
@@ -51,7 +37,7 @@ namespace ipog.Bon.Repositories.Services
                     action = "Get",
                     uid
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters);
         }
       
         public async Task<Customer?> Add(Customer model)
@@ -71,7 +57,7 @@ namespace ipog.Bon.Repositories.Services
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters);
         }
      
         public async Task<Customer?> Update(Customer model)
@@ -92,7 +78,7 @@ namespace ipog.Bon.Repositories.Services
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<Customer>("sp_Customer", parameters);
         }
      
         public async Task<int> Delete(Guid uid)
@@ -103,7 +89,7 @@ namespace ipog.Bon.Repositories.Services
                     action = "Delete",
                     uid
                 });
-            return await _connection.ExecuteAsync("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await base.ExecuteAsync("sp_CustomerById", parameters);
         }
       
         public async Task<Customer?> IsActive(Guid uid, bool isActive)
@@ -115,7 +101,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     isActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<Customer>("sp_CustomerById", parameters);
         }
 
         public async Task<string?> EmailValidation(Guid? uid, string email)
@@ -127,7 +113,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     email
                 });
-            return await _connection.QueryFirstOrDefaultAsync<string>("sp_CustomerValidation", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<string>("sp_CustomerValidation", parameters);
         }
 
         public async Task<string?> MobileValidation(Guid? uid, string mobile)
@@ -139,7 +125,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     mobile
                 });
-            return await _connection.QueryFirstOrDefaultAsync<string>("sp_CustomerValidation", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<string>("sp_CustomerValidation", parameters);
         }
     }
 }

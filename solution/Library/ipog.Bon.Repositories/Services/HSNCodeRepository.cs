@@ -2,23 +2,16 @@
 using ipog.Bon.Entity;
 using ipog.Bon.Entity.Tables;
 using ipog.Bon.Repositories.IServices;
-using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using System.Data;
-using static Dapper.SqlMapper;
 
 namespace ipog.Bon.Repositories.Services
 {
-    public class HSNCodeRepository : IHSNCodeRepository
+    public class HSNCodeRepository : BaseRepository, IHSNCodeRepository
     {
-        private readonly IConfiguration _configuration;
-        private readonly SqlConnection _connection;
-        public HSNCodeRepository(IConfiguration configuration)
+        public HSNCodeRepository(IConfiguration configuration) : base(configuration)
         {
-            _configuration = configuration;
-            _connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         }
-       
+
         public async Task<(int, IEnumerable<HSNCode>)> Get(Pagination pagination)
         {
             DynamicParameters parameters = new(
@@ -28,19 +21,12 @@ namespace ipog.Bon.Repositories.Services
                     orderBy = pagination.OrderBy,
                     sortBy = pagination.SortBy,
                 });
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_HSNCodeGet", parameters, commandType: CommandType.StoredProcedure))
-            {
-                return (response.ReadFirst<int>(), response.Read<HSNCode>());
-            }
+            return await base.QueryMultipleAsync<HSNCode>("sp_HSNCodeGet", parameters);
         }
       
         public async Task<(int, IEnumerable<HSNCode>)> Get(FilterPagination pagination)
         {
-            using (GridReader response = await _connection.QueryMultipleAsync("sp_HSNCodeGet",
-                PaginationFilter.GetPaginationParameters(pagination), commandType: CommandType.StoredProcedure))
-            {
-                return (response.ReadFirst<int>(), response.Read<HSNCode>());
-            }
+            return await base.QueryMultipleAsync<HSNCode>("sp_HSNCodeGet", PaginationFilter.GetFilterPagination(pagination));
         }
       
         public async Task<HSNCode?> Find(Guid uid)
@@ -51,7 +37,7 @@ namespace ipog.Bon.Repositories.Services
                     action = "Get",
                     uid
                 });
-            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters);
         }
       
         public async Task<HSNCode?> Add(HSNCode model)
@@ -69,7 +55,7 @@ namespace ipog.Bon.Repositories.Services
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCode", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCode", parameters);
         }
      
         public async Task<HSNCode?> Update(HSNCode model)
@@ -88,7 +74,7 @@ namespace ipog.Bon.Repositories.Services
                     actionBy = model.ActionBy,
                     isActive = model.IsActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCode", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCode", parameters);
         }
      
         public async Task<int> Delete(Guid uid)
@@ -99,7 +85,7 @@ namespace ipog.Bon.Repositories.Services
                     action = "Delete",
                     uid
                 });
-            return await _connection.ExecuteAsync("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
+            return await base.ExecuteAsync("sp_HSNCodeById", parameters);
         }
       
         public async Task<HSNCode?> IsActive(Guid uid, bool isActive)
@@ -111,7 +97,7 @@ namespace ipog.Bon.Repositories.Services
                     uid,
                     isActive
                 });
-            return await _connection.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<HSNCode>("sp_HSNCodeById", parameters);
         }
 
         public async Task<string?> NameValidation(Guid? uid, string name, long categoryId)
@@ -123,7 +109,7 @@ namespace ipog.Bon.Repositories.Services
                     name,
                     categoryId
                 });
-            return await _connection.QueryFirstOrDefaultAsync<string>("sp_HSNCodeValidation", parameters, commandType: CommandType.StoredProcedure);
+            return await base.QueryFirstOrDefaultAsync<string>("sp_HSNCodeValidation", parameters);
         }
 
     }

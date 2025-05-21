@@ -5,7 +5,7 @@ namespace ipog.Bon.Repositories
 {
     public static class PaginationFilter
     {
-        public static DynamicParameters GetPaginationParameters(FilterPagination pagination)
+        public static DynamicParameters GetFilterPagination(FilterPagination pagination)
         {
             string filters = string.Empty;
             if (pagination.FilterColumns != null && pagination.FilterColumns.Count > 0)
