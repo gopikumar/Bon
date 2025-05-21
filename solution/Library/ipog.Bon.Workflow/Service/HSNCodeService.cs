@@ -3,42 +3,39 @@ using ipog.Bon.Entity.Tables;
 using ipog.Bon.Model;
 using ipog.Bon.Model.Tables;
 using ipog.Bon.Repositories.IServices;
-using ipog.Bon.Repositories.Services;
 using ipog.Bon.Workflow.IService;
 using ipog.Bon.Workflow.Mapping;
 using ipog.Bon.Workflow.Response;
 
 namespace ipog.Bon.Workflow.Service
 {
-    public class HSNCodeService : IHSNCodeService
+    public class HSNCodeService : BaseService, IHSNCodeService
     {
         private readonly IHSNCodeRepository _hsnCodeRepository;
-        private readonly IMapping _mapper;
-        public HSNCodeService(IHSNCodeRepository hsnCodeRepository, IMapping mapper)
+        public HSNCodeService(IHSNCodeRepository hsnCodeRepository, IMapping mapper) : base(mapper)
         {
             _hsnCodeRepository = hsnCodeRepository;
-            _mapper = mapper;
         }
 
         public async Task<ResponseModelCollection<HSNCodeModelCollection>> Get(PaginationModel pagination)
         {
-            var (count, items) = await _hsnCodeRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination));
+            var (count, items) = await _hsnCodeRepository.Get(await base.Map<Pagination, PaginationModel>(pagination));
             if (count == 0 || items == null || !items.Any())
             {
                 return UtilityResponse.ErrorResponseCollection<HSNCodeModelCollection>(404, "Data not found");
             }
-            HSNCodeModelCollection collection = await _mapper.CreateMap<HSNCodeModelCollection, List<HSNCode>>(items.ToList());
+            HSNCodeModelCollection collection = await base.Map<HSNCodeModelCollection, List<HSNCode>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<HSNCodeModelCollection>(200, "Get successfully", count, collection);
         }
 
         public async Task<ResponseModelCollection<HSNCodeModelCollection>> Get(FilterPaginationModel pagination)
         {
-            var (count, items) = await _hsnCodeRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination));
+            var (count, items) = await _hsnCodeRepository.Get(await base.Map<FilterPagination, FilterPaginationModel>(pagination));
             if (count == 0 || items == null || !items.Any())
             {
                 return UtilityResponse.ErrorResponseCollection<HSNCodeModelCollection>(404, "Data not found");
             }
-            HSNCodeModelCollection collection = await _mapper.CreateMap<HSNCodeModelCollection, List<HSNCode>>(items.ToList());
+            HSNCodeModelCollection collection = await base.Map<HSNCodeModelCollection, List<HSNCode>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<HSNCodeModelCollection>(200, "Get successfully", count, collection);
         }
 
@@ -46,25 +43,25 @@ namespace ipog.Bon.Workflow.Service
         {
             if (await _hsnCodeRepository.Find(uid) is HSNCode item)
             {
-                return UtilityResponse.SuccessResponseByModel<GetHSNCodeModel>(200, "Get successfully", await _mapper.CreateMap<GetHSNCodeModel, HSNCode>(item));
+                return UtilityResponse.SuccessResponseByModel<GetHSNCodeModel>(200, "Get successfully", await base.Map<GetHSNCodeModel, HSNCode>(item));
             }
             return UtilityResponse.ErrorResponseByModel<GetHSNCodeModel>(404, "Data not found");
         }
 
         public async Task<ResponseModel<GetHSNCodeModel>> Add(HSNCodeModel model)
         {
-            if (await _hsnCodeRepository.Add(await _mapper.CreateMap<HSNCode, HSNCodeModel>(model)) is HSNCode item)
+            if (await _hsnCodeRepository.Add(await base.Map<HSNCode, HSNCodeModel>(model)) is HSNCode item)
             {
-                return UtilityResponse.SuccessResponse<GetHSNCodeModel>(200, "Insert successfully", await _mapper.CreateMap<GetHSNCodeModel, HSNCode>(item));
+                return UtilityResponse.SuccessResponse<GetHSNCodeModel>(200, "Insert successfully", await base.Map<GetHSNCodeModel, HSNCode>(item));
             }
             return UtilityResponse.ErrorResponse<GetHSNCodeModel>(404, "Insert failed");
         }
 
         public async Task<ResponseModel<GetHSNCodeModel>> Update(HSNCodeModel model)
         {
-            if (await _hsnCodeRepository.Update(await _mapper.CreateMap<HSNCode, HSNCodeModel>(model)) is HSNCode item)
+            if (await _hsnCodeRepository.Update(await base.Map<HSNCode, HSNCodeModel>(model)) is HSNCode item)
             {
-                return UtilityResponse.SuccessResponse<GetHSNCodeModel>(200, "Update successfully", await _mapper.CreateMap<GetHSNCodeModel, HSNCode>(item));
+                return UtilityResponse.SuccessResponse<GetHSNCodeModel>(200, "Update successfully", await base.Map<GetHSNCodeModel, HSNCode>(item));
             }
             return UtilityResponse.ErrorResponse<GetHSNCodeModel>(404, "Update failed");
         }
@@ -83,7 +80,7 @@ namespace ipog.Bon.Workflow.Service
         {
             if (await _hsnCodeRepository.IsActive(uid, isActive) is HSNCode item)
             {
-                return UtilityResponse.SuccessResponseByModel<GetHSNCodeModel>(200, "Active status updated successfully", await _mapper.CreateMap<GetHSNCodeModel, HSNCode>(item));
+                return UtilityResponse.SuccessResponseByModel<GetHSNCodeModel>(200, "Active status updated successfully", await base.Map<GetHSNCodeModel, HSNCode>(item));
             }
             return UtilityResponse.ErrorResponseByModel<GetHSNCodeModel>(404, "Data not found");
         }

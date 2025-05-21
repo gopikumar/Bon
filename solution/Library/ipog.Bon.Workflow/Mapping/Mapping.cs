@@ -16,13 +16,13 @@ namespace ipog.Bon.Workflow.Mapping
         #endregion
 
         #region Events
-        private  Task<T> Map<T, U>(U entity)
+        private  Task<TSource> Map<TSource, TDestination>(TDestination entity)
         {
-            return Task.FromResult(_mapper.Map<T>(entity));
+            return Task.FromResult(_mapper.Map<TSource>(entity));
         }
-        public async Task<T> CreateMap<T, U>(U entity)
+        public async Task<TSource> CreateMap<TSource, TDestination>(TDestination entity)
         {
-            return await Map<T, U>(entity);
+            return await Map<TSource, TDestination>(entity);
         }
         #endregion
     }

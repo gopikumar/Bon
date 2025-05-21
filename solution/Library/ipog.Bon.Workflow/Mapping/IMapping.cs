@@ -2,6 +2,6 @@
 {
     public interface IMapping
     {
-        Task<T> CreateMap<T, U>(U entity);
+        Task<TSource> CreateMap<TSource, TDestination>(TDestination entity);
     }
 }

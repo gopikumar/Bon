@@ -3,42 +3,39 @@ using ipog.Bon.Entity.Tables;
 using ipog.Bon.Model;
 using ipog.Bon.Model.Tables;
 using ipog.Bon.Repositories.IServices;
-using ipog.Bon.Repositories.Services;
 using ipog.Bon.Workflow.IService;
 using ipog.Bon.Workflow.Mapping;
 using ipog.Bon.Workflow.Response;
 
 namespace ipog.Bon.Workflow.Service
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService : BaseService, ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
-        private readonly IMapping _mapper;
-        public CategoryService(ICategoryRepository categoryRepository, IMapping mapper)
+        public CategoryService(ICategoryRepository categoryRepository, IMapping mapper) : base(mapper)
         {
             _categoryRepository = categoryRepository;
-            _mapper = mapper;
         }
 
         public async Task<ResponseModelCollection<CategoryModelCollection>> Get(PaginationModel pagination)
         {
-            var (count, items) = await _categoryRepository.Get(await _mapper.CreateMap<Pagination, PaginationModel>(pagination));
+            var (count, items) = await _categoryRepository.Get(await base.Map<Pagination, PaginationModel>(pagination));
             if (count == 0 || items == null || !items.Any())
             {
                 return UtilityResponse.ErrorResponseCollection<CategoryModelCollection>(404, "Data not found");
             }
-            CategoryModelCollection collection = await _mapper.CreateMap<CategoryModelCollection, List<Category>>(items.ToList());
+            CategoryModelCollection collection = await base.Map<CategoryModelCollection, List<Category>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<CategoryModelCollection>(200, "Get successfully", count, collection);
         }
 
         public async Task<ResponseModelCollection<CategoryModelCollection>> Get(FilterPaginationModel pagination)
         {
-            var (count, items) = await _categoryRepository.Get(await _mapper.CreateMap<FilterPagination, FilterPaginationModel>(pagination));
+            var (count, items) = await _categoryRepository.Get(await base.Map<FilterPagination, FilterPaginationModel>(pagination));
             if (count == 0 || items == null || !items.Any())
             {
                 return UtilityResponse.ErrorResponseCollection<CategoryModelCollection>(404, "Data not found");
             }
-            CategoryModelCollection collection = await _mapper.CreateMap<CategoryModelCollection, List<Category>>(items.ToList());
+            CategoryModelCollection collection = await base.Map<CategoryModelCollection, List<Category>>(items.ToList());
             return UtilityResponse.SuccessResponseCollection<CategoryModelCollection>(200, "Get successfully", count, collection);
         }
 
@@ -46,25 +43,25 @@ namespace ipog.Bon.Workflow.Service
         {
             if (await _categoryRepository.Find(uid) is Category item)
             {
-                return UtilityResponse.SuccessResponseByModel<GetCategoryModel>(200, "Get successfully", await _mapper.CreateMap<GetCategoryModel, Category>(item));
+                return UtilityResponse.SuccessResponseByModel<GetCategoryModel>(200, "Get successfully", await base.Map<GetCategoryModel, Category>(item));
             }
             return UtilityResponse.ErrorResponseByModel<GetCategoryModel>(404, "Data not found");
         }
 
         public async Task<ResponseModel<GetCategoryModel>> Add(CategoryModel model)
         {
-            if (await _categoryRepository.Add(await _mapper.CreateMap<Category, CategoryModel>(model)) is Category item)
+            if (await _categoryRepository.Add(await base.Map<Category, CategoryModel>(model)) is Category item)
             {
-                return UtilityResponse.SuccessResponse<GetCategoryModel>(200, "Insert successfully", await _mapper.CreateMap<GetCategoryModel, Category>(item));
+                return UtilityResponse.SuccessResponse<GetCategoryModel>(200, "Insert successfully", await base.Map<GetCategoryModel, Category>(item));
             }
             return UtilityResponse.ErrorResponse<GetCategoryModel>(404, "Insert failed");
         }
 
         public async Task<ResponseModel<GetCategoryModel>> Update(CategoryModel model)
         {
-            if (await _categoryRepository.Update(await _mapper.CreateMap<Category, CategoryModel>(model)) is Category item)
+            if (await _categoryRepository.Update(await base.Map<Category, CategoryModel>(model)) is Category item)
             {
-                return UtilityResponse.SuccessResponse<GetCategoryModel>(200, "Update successfully", await _mapper.CreateMap<GetCategoryModel, Category>(item));
+                return UtilityResponse.SuccessResponse<GetCategoryModel>(200, "Update successfully", await base.Map<GetCategoryModel, Category>(item));
             }
             return UtilityResponse.ErrorResponse<GetCategoryModel>(404, "Update failed");
         }
@@ -83,7 +80,7 @@ namespace ipog.Bon.Workflow.Service
         {
             if (await _categoryRepository.IsActive(uid, isActive) is Category item)
             {
-                return UtilityResponse.SuccessResponseByModel<GetCategoryModel>(200, "Active status updated successfully", await _mapper.CreateMap<GetCategoryModel, Category>(item));
+                return UtilityResponse.SuccessResponseByModel<GetCategoryModel>(200, "Active status updated successfully", await base.Map<GetCategoryModel, Category>(item));
             }
             return UtilityResponse.ErrorResponseByModel<GetCategoryModel>(404, "Data not found");
         }
